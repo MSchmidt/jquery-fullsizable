@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>jQuery.fullsizable example/demo</title>
+  <style type="text/css" media="screen">
+    #container {
+      min-height: 1000px;
+    }
+  </style>
+  <link rel="stylesheet" href="fullsizable.css" type="text/css" />
+  <script src="jquery-1.6.1.js" type="text/javascript"></script>
+  <script src="jquery.fullsizable.js" type="text/javascript"></script>
+  <script type="text/javascript" charset="utf-8">    
+    $(function() {
+      $('a').fullsizable({
+        detach_id: 'container'
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div id="container">
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/1000px-Locomotives-Roundhouse2.jpg">
+      <img title="Locomotives Roundhouse"
+            alt="Steam locomotives of the Chicago &amp; North Western Railway." 
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/100px-Locomotives-Roundhouse2.jpg">
+    </a>
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Icebergs_in_the_High_Arctic_-_20050907.jpg/1000px-Icebergs_in_the_High_Arctic_-_20050907.jpg">
+      <img title="Icebergs in the High Arctic"
+            alt="”The debris loading isn't particularly extensive, but the color is usual.”"
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Icebergs_in_the_High_Arctic_-_20050907.jpg/100px-Icebergs_in_the_High_Arctic_-_20050907.jpg">
+    </a>
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/1000px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
+      <img title="Araña"
+            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/100px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
+    </a>
+    <a href="http://buildinternet.s3.amazonaws.com/projects/supersized/3.1/slides/wilderness2.jpg">
+      <img title="Araña"
+            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+            src="http://upload.wikimedia.org/wikipedia/commons/a/ac/Iceberg.jpg">
+    </a>
+  </div>
+</body>
+</html>
