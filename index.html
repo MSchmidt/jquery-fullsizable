@@ -8,12 +8,29 @@
     }
   </style>
   <link rel="stylesheet" href="fullsizable.css" type="text/css" />
-  <script src="jquery-1.6.1.js" type="text/javascript"></script>
+  <style type="text/css" media="screen">
+    #fullsized_go_prev, #fullsized_go_next {
+      position: absolute;
+      top: 50%;
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+    }
+    #fullsized_go_prev {
+      left: 25px;
+    }
+    #fullsized_go_next {
+      right: 25px;
+    }
+  </style>
+  <script src="jquery-1.6.2.js" type="text/javascript"></script>
   <script src="jquery.fullsizable.js" type="text/javascript"></script>
   <script type="text/javascript" charset="utf-8">    
     $(function() {
       $('a').fullsizable({
-        detach_id: 'container'
+        detach_id: 'container',
+        navigation: true
       });
     });
   </script>
