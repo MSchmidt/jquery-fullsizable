@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v1.1
+jQuery fullsizable plugin v1.2
   - take full available browser space to show images
 
 (c) 2011 Matthias Schmidt <http://m-schmidt.eu/>
@@ -8,15 +8,17 @@ Example Usage:
   $('a.fullsizable').fullsizable();
 
 Options:
-  detach_id: optional id of an element that will be set to display: none after curtain loaded
-              this can be used to hide scrollbars on long pages by e.g. detaching a wrapper element
+  **detach_id** (optional) - id of an element that will be set to display: none after the curtain loaded.
+  **navigation** (optional) - set to true to show next and previous links.
 ###
 
 $ = jQuery
 
+container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
 spinner_class = 'fullsized_spinner'
-image_holder = '<div id="fullsized_image_holder"></div>'
+image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
+navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
 
 images = []
 current_image = 0
@@ -38,16 +40,30 @@ resizeImage = ->
 keyPressed = (e) ->
   closeViewer() if e.keyCode == 27
 
-  if e.keyCode == 37 && current_image > 0
+  if e.keyCode == 37
+    prevImage()
+
+  if e.keyCode == 39
+    nextImage()
+
+prevImage = ->
+  if current_image > 0
     showImage(images[current_image - 1], -1)
 
-  if e.keyCode == 39 && current_image < images.length - 1
-    showImage(images[current_image + 1], 1)
+nextImage = ->
+  if current_image < images.length - 1
+    showImage(images[current_image + 1], 1) 
 
 showImage = (image, direction = 1) ->
   current_image = image.index
   $(image).hide()
   $(image_holder_id).html(image)
+
+  # show/hide navigation when hitting range limits
+  if options.navigation
+    $('#fullsized_go_prev').toggle(current_image != 0)
+    $('#fullsized_go_next').toggle(current_image != images.length - 1)
+
   if image.loaded?
     $(image_holder_id).removeClass(spinner_class)
     resizeImage()
@@ -81,21 +97,33 @@ preloadImage = (direction) ->
 openViewer = ->
   $(document).bind 'keydown', keyPressed
   $(window).bind 'resize', resizeImage
-  $(image_holder_id).hide().fadeIn ->
+  $(container_id).hide().fadeIn ->
     $('#' + options.detach_id).css('display', 'none') if options.detach_id?
     resizeImage()
 
 closeViewer = ->
   $('#' + options.detach_id).css('display', 'block') if options.detach_id?
-  $(image_holder_id).fadeOut()
-    
+  $(container_id).fadeOut()
+
   $(image_holder_id).removeClass(spinner_class)
   $(document).unbind 'keydown', keyPressed
   $(window).unbind 'resize', resizeImage
 
 $.fn.fullsizable = (opt = {}) ->
   options = opt
+
   $('body').append(image_holder)
+
+  if options.navigation
+    image_holder.append(navigation_holder)
+    $('#fullsized_go_prev').click (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      prevImage()
+    $('#fullsized_go_next').click (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      nextImage()
 
   this.each ->
     image = new Image
@@ -108,4 +136,4 @@ $.fn.fullsizable = (opt = {}) ->
       showImage(image)
       openViewer()
 
-  $(image_holder_id).click closeViewer
+  $(container_id).click closeViewer
