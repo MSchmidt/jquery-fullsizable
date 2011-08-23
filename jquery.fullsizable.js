@@ -105,13 +105,13 @@
     }
   };
   openViewer = function() {
-    $(document).bind('keydown', keyPressed);
     $(window).bind('resize', resizeImage);
     return $(container_id).hide().fadeIn(function() {
       if (options.detach_id != null) {
         $('#' + options.detach_id).css('display', 'none');
       }
       $(container_id).bind('click', closeViewer);
+      $(document).bind('keydown', keyPressed);
       return resizeImage();
     });
   };

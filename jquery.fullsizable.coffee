@@ -95,11 +95,11 @@ preloadImage = (direction) ->
   preload_image.src = preload_image.buffer_src if preload_image.src == ''
 
 openViewer = ->
-  $(document).bind 'keydown', keyPressed
   $(window).bind 'resize', resizeImage
   $(container_id).hide().fadeIn ->
     $('#' + options.detach_id).css('display', 'none') if options.detach_id?
     $(container_id).bind 'click', closeViewer
+    $(document).bind 'keydown', keyPressed
     resizeImage()
 
 closeViewer = ->
