@@ -99,10 +99,12 @@ openViewer = ->
   $(window).bind 'resize', resizeImage
   $(container_id).hide().fadeIn ->
     $('#' + options.detach_id).css('display', 'none') if options.detach_id?
+    $(container_id).bind 'click', closeViewer
     resizeImage()
 
 closeViewer = ->
   $('#' + options.detach_id).css('display', 'block') if options.detach_id?
+  $(container_id).unbind 'click', closeViewer
   $(container_id).fadeOut()
 
   $(image_holder_id).removeClass(spinner_class)
@@ -135,5 +137,3 @@ $.fn.fullsizable = (opt = {}) ->
       e.preventDefault()
       showImage(image)
       openViewer()
-
-  $(container_id).click closeViewer

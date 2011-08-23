@@ -11,7 +11,8 @@
   Options:
     **detach_id** (optional) - id of an element that will be set to display: none after the curtain loaded.
     **navigation** (optional) - set to true to show next and previous links.
-  */  var $, closeViewer, container_id, current_image, image_holder, image_holder_id, images, keyPressed, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, showImage, spinner_class;
+  */
+  var $, closeViewer, container_id, current_image, image_holder, image_holder_id, images, keyPressed, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, showImage, spinner_class;
   $ = jQuery;
   container_id = '#jquery-fullsizable';
   image_holder_id = '#fullsized_image_holder';
@@ -24,11 +25,9 @@
   resizeImage = function() {
     var image, _ref;
     image = images[current_image];
-        if ((_ref = image.ratio) != null) {
-      _ref;
-    } else {
+    if ((_ref = image.ratio) == null) {
       image.ratio = (image.height / image.width).toFixed(2);
-    };
+    }
     if ($(window).height() / image.ratio > $(window).width()) {
       $(image).width($(window).width());
       $(image).height($(window).width() * image.ratio);
@@ -112,6 +111,7 @@
       if (options.detach_id != null) {
         $('#' + options.detach_id).css('display', 'none');
       }
+      $(container_id).bind('click', closeViewer);
       return resizeImage();
     });
   };
@@ -119,6 +119,7 @@
     if (options.detach_id != null) {
       $('#' + options.detach_id).css('display', 'block');
     }
+    $(container_id).unbind('click', closeViewer);
     $(container_id).fadeOut();
     $(image_holder_id).removeClass(spinner_class);
     $(document).unbind('keydown', keyPressed);
@@ -143,7 +144,7 @@
         return nextImage();
       });
     }
-    this.each(function() {
+    return this.each(function() {
       var image;
       image = new Image;
       image.buffer_src = this.href;
@@ -155,6 +156,5 @@
         return openViewer();
       });
     });
-    return $(container_id).click(closeViewer);
   };
 }).call(this);
