@@ -14,6 +14,8 @@ Style links with #fullsized\_go\_prev and #fullsized\_go\_next
 ## Changelog
 * **unreleased**
   * bugfix: closing curtain to early left blank page
+  * bugfix: spinner appeared to late
+  * bugfix: first image appeared uncropped sometimes
 
 * **1.2** - 11.08.2011
   * add navigation option to enable next and previous links

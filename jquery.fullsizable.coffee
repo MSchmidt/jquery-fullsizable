@@ -65,17 +65,17 @@ showImage = (image, direction = 1) ->
     $('#fullsized_go_next').toggle(current_image != images.length - 1)
 
   if image.loaded?
-    $(image_holder_id).removeClass(spinner_class)
+    $(container_id).removeClass(spinner_class)
     resizeImage()
     $(image).fadeIn('fast')
     preloadImage(direction)
   else
     # first load
-    $(image_holder_id).addClass(spinner_class)
+    $(container_id).addClass(spinner_class)
     image.onload = ->
       resizeImage()
       $(this).fadeIn 'slow', ->
-        $(image_holder_id).removeClass(spinner_class)
+        $(container_id).removeClass(spinner_class)
       this.loaded = true
       preloadImage(direction)
 
@@ -100,14 +100,13 @@ openViewer = ->
     $('#' + options.detach_id).css('display', 'none') if options.detach_id?
     $(container_id).bind 'click', closeViewer
     $(document).bind 'keydown', keyPressed
-    resizeImage()
 
 closeViewer = ->
   $('#' + options.detach_id).css('display', 'block') if options.detach_id?
   $(container_id).unbind 'click', closeViewer
   $(container_id).fadeOut()
 
-  $(image_holder_id).removeClass(spinner_class)
+  $(container_id).removeClass(spinner_class)
   $(document).unbind 'keydown', keyPressed
   $(window).unbind 'resize', resizeImage
 

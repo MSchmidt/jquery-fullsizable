@@ -71,16 +71,16 @@
       $('#fullsized_go_next').toggle(current_image !== images.length - 1);
     }
     if (image.loaded != null) {
-      $(image_holder_id).removeClass(spinner_class);
+      $(container_id).removeClass(spinner_class);
       resizeImage();
       $(image).fadeIn('fast');
       return preloadImage(direction);
     } else {
-      $(image_holder_id).addClass(spinner_class);
+      $(container_id).addClass(spinner_class);
       image.onload = function() {
         resizeImage();
         $(this).fadeIn('slow', function() {
-          return $(image_holder_id).removeClass(spinner_class);
+          return $(container_id).removeClass(spinner_class);
         });
         this.loaded = true;
         return preloadImage(direction);
@@ -111,8 +111,7 @@
         $('#' + options.detach_id).css('display', 'none');
       }
       $(container_id).bind('click', closeViewer);
-      $(document).bind('keydown', keyPressed);
-      return resizeImage();
+      return $(document).bind('keydown', keyPressed);
     });
   };
   closeViewer = function() {
@@ -121,7 +120,7 @@
     }
     $(container_id).unbind('click', closeViewer);
     $(container_id).fadeOut();
-    $(image_holder_id).removeClass(spinner_class);
+    $(container_id).removeClass(spinner_class);
     $(document).unbind('keydown', keyPressed);
     return $(window).unbind('resize', resizeImage);
   };
