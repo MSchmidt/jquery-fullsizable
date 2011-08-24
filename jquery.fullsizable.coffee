@@ -24,7 +24,7 @@ images = []
 current_image = 0
 options = null
 
-resizeImage = ->  
+resizeImage = ->
   image = images[current_image]
 
   image.ratio ?= (image.height / image.width).toFixed(2)
@@ -56,7 +56,7 @@ nextImage = ->
 
 showImage = (image, direction = 1) ->
   current_image = image.index
-  $(image).hide()
+  $(image_holder_id).hide()
   $(image_holder_id).html(image)
 
   # show/hide navigation when hitting range limits
@@ -67,14 +67,14 @@ showImage = (image, direction = 1) ->
   if image.loaded?
     $(container_id).removeClass(spinner_class)
     resizeImage()
-    $(image).fadeIn('fast')
+    $(image_holder_id).fadeIn('fast')
     preloadImage(direction)
   else
     # first load
     $(container_id).addClass(spinner_class)
     image.onload = ->
       resizeImage()
-      $(this).fadeIn 'slow', ->
+      $(image_holder_id).fadeIn 'slow', ->
         $(container_id).removeClass(spinner_class)
       this.loaded = true
       preloadImage(direction)
@@ -94,10 +94,13 @@ preloadImage = (direction) ->
     this.loaded = true
   preload_image.src = preload_image.buffer_src if preload_image.src == ''
 
-openViewer = ->
+openViewer = (image) ->
   $(window).bind 'resize', resizeImage
+  showImage(image)
   $(container_id).hide().fadeIn ->
-    $('#' + options.detach_id).css('display', 'none') if options.detach_id?
+    if options.detach_id?
+      $('#' + options.detach_id).css('display', 'none')
+      resizeImage()
     $(container_id).bind 'click', closeViewer
     $(document).bind 'keydown', keyPressed
 
@@ -134,5 +137,4 @@ $.fn.fullsizable = (opt = {}) ->
 
     $(this).click (e) ->
       e.preventDefault()
-      showImage(image)
-      openViewer()
+      openViewer(image)
