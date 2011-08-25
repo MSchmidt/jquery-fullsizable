@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v1.2
+jQuery fullsizable plugin v1.3
   - take full available browser space to show images
 
 (c) 2011 Matthias Schmidt <http://m-schmidt.eu/>
@@ -8,8 +8,9 @@ Example Usage:
   $('a.fullsizable').fullsizable();
 
 Options:
-  **detach_id** (optional) - id of an element that will be set to display: none after the curtain loaded.
-  **navigation** (optional) - set to true to show next and previous links.
+  **detach_id** (optional, defaults to null) - id of an element that will be set to display: none after the curtain loaded.
+  **navigation** (optional, defaults to false) - set to true to show next and previous links.
+  **openOnClick** (optional, defaults to true) - set to false to disable default behavior which fullsizes an image when clicking on a thumb.
 ###
 
 $ = jQuery
