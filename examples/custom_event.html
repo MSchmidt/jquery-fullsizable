@@ -5,41 +5,30 @@
   <title>jQuery.fullsizable example/demo</title>
   <meta name="description" content="jQuery fullsizable Example" /> 
   <meta name="author" content="Matthias Schmidt - http://m-schmidt.eu" />
-  <style type="text/css" media="screen">
-    #container {
-      min-height: 1000px;
-    }
-  </style>
-  <link rel="stylesheet" href="fullsizable.css" type="text/css" />
-  <style type="text/css" media="screen">
-    #fullsized_go_prev, #fullsized_go_next {
-      position: absolute;
-      top: 50%;
-      display: block;
-      width: 30px;
-      height: 30px;
-      background-color: red;
-    }
-    #fullsized_go_prev {
-      left: 25px;
-    }
-    #fullsized_go_next {
-      right: 25px;
-    }
-  </style>
-  <script src="jquery-1.6.2.js" type="text/javascript"></script>
-  <script src="jquery.fullsizable.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../css/fullsizable.css" type="text/css" />
+  <script src="../js/jquery-1.6.2.js" type="text/javascript"></script>
+  <script src="../js/jquery.fullsizable.js" type="text/javascript"></script>
   <script type="text/javascript" charset="utf-8">    
     $(function() {
       $('a').fullsizable({
-        detach_id: 'container',
-        navigation: true
+        openOnClick: false
+      });
+
+      $('a').click(function(e) {
+        e.preventDefault();
+      });
+      $('a').dblclick(function(e) {
+        e.preventDefault();
+        $.fullsizableOpen(this);
       });
     });
   </script>
 </head>
 
 <body>
+  <h1>jQuery.fullsizable</h1>
+  <h2>Custom event to open fullsized view</h2>
+  <p>Try double clicking any image to see it fullsized!</p>
   <div id="container">
     <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/1000px-Locomotives-Roundhouse2.jpg">
       <img title="Locomotives Roundhouse"
@@ -56,10 +45,10 @@
             alt="Xysticus cristatus, A Estrada, Galicia, Spain"
             src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/100px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
     </a>
-    <a href="http://buildinternet.s3.amazonaws.com/projects/supersized/3.1/slides/wilderness2.jpg">
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/1000px-Fitness_Model_Britt_2007.JPG">
       <img title="Araña"
             alt="Xysticus cristatus, A Estrada, Galicia, Spain"
-            src="http://upload.wikimedia.org/wikipedia/commons/a/ac/Iceberg.jpg">
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/100px-Fitness_Model_Britt_2007.JPG">
     </a>
   </div>
 </body>

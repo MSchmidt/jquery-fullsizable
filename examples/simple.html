@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>jQuery.fullsizable example/demo</title>
+  <meta name="description" content="jQuery fullsizable Example" /> 
+  <meta name="author" content="Matthias Schmidt - http://m-schmidt.eu" />
+  <style type="text/css" media="screen">
+    #container {
+      min-height: 1000px;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/fullsizable.css" type="text/css" />
+  <style type="text/css" media="screen">
+    #fullsized_go_prev, #fullsized_go_next {
+      position: absolute;
+      top: 50%;
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: red;
+    }
+    #fullsized_go_prev {
+      left: 25px;
+    }
+    #fullsized_go_next {
+      right: 25px;
+    }
+  </style>
+  <script src="../js/jquery-1.6.2.js" type="text/javascript"></script>
+  <script src="../js/jquery.fullsizable.js" type="text/javascript"></script>
+  <script type="text/javascript" charset="utf-8">    
+    $(function() {
+      $('a').fullsizable({
+        detach_id: 'container',
+        navigation: true
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <h1>jQuery.fullsizable</h1>
+  <div id="container">
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/1000px-Locomotives-Roundhouse2.jpg">
+      <img title="Locomotives Roundhouse"
+            alt="Steam locomotives of the Chicago &amp; North Western Railway." 
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/100px-Locomotives-Roundhouse2.jpg">
+    </a>
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Icebergs_in_the_High_Arctic_-_20050907.jpg/1000px-Icebergs_in_the_High_Arctic_-_20050907.jpg">
+      <img title="Icebergs in the High Arctic"
+            alt="”The debris loading isn't particularly extensive, but the color is usual.”"
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Icebergs_in_the_High_Arctic_-_20050907.jpg/100px-Icebergs_in_the_High_Arctic_-_20050907.jpg">
+    </a>
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/1000px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
+      <img title="Araña"
+            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/100px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
+    </a>
+    <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/1000px-Fitness_Model_Britt_2007.JPG">
+      <img title="Araña"
+            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+            src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/100px-Fitness_Model_Britt_2007.JPG">
+    </a>
+  </div>
+</body>
+</html>

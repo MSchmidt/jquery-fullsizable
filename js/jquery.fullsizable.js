@@ -12,13 +12,14 @@
     **detach_id** (optional) - id of an element that will be set to display: none after the curtain loaded.
     **navigation** (optional) - set to true to show next and previous links.
   */
-  var $, closeViewer, container_id, current_image, image_holder, image_holder_id, images, keyPressed, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, showImage, spinner_class;
+  var $, closeViewer, container_id, current_image, image_holder, image_holder_id, images, keyPressed, makeFullsizable, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class;
   $ = jQuery;
   container_id = '#jquery-fullsizable';
   image_holder_id = '#fullsized_image_holder';
   spinner_class = 'fullsized_spinner';
   image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
   navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
+  selector = null;
   images = [];
   current_image = 0;
   options = null;
@@ -126,11 +127,40 @@
     $(document).unbind('keydown', keyPressed);
     return $(window).unbind('resize', resizeImage);
   };
+  makeFullsizable = function() {
+    var sel;
+    images.length = 0;
+    if (options.dynamic) {
+      sel = $(options.dynamic);
+    } else {
+      sel = selector;
+    }
+    return sel.each(function() {
+      var image;
+      image = new Image;
+      image.buffer_src = $(this).attr('href');
+      image.index = images.length;
+      images.push(image);
+      if (options.openOnClick) {
+        return $(this).click(function(e) {
+          e.preventDefault();
+          return openViewer(image);
+        });
+      }
+    });
+  };
   $.fn.fullsizable = function(opt) {
+    var defaults;
     if (opt == null) {
       opt = {};
     }
-    options = opt;
+    defaults = {
+      detach_id: null,
+      navigation: false,
+      openOnClick: true,
+      dynamic: null
+    };
+    options = $.extend(defaults, opt);
     $('body').append(image_holder);
     if (options.navigation) {
       image_holder.append(navigation_holder);
@@ -145,16 +175,30 @@
         return nextImage();
       });
     }
-    return this.each(function() {
-      var image;
-      image = new Image;
-      image.buffer_src = this.href;
-      image.index = images.length;
-      images.push(image);
-      return $(this).click(function(e) {
-        e.preventDefault();
-        return openViewer(image);
-      });
-    });
+    selector = this;
+    if (!options.dynamic) {
+      makeFullsizable();
+    }
+    return this;
+  };
+  $.fullsizableDynamic = function(selector, opt) {
+    if (opt == null) {
+      opt = {};
+    }
+    return $(selector).fullsizable($.extend(opt, {
+      dynamic: selector
+    }));
+  };
+  $.fullsizableOpen = function(target) {
+    var image, _i, _len, _results;
+    if (options.dynamic) {
+      makeFullsizable();
+    }
+    _results = [];
+    for (_i = 0, _len = images.length; _i < _len; _i++) {
+      image = images[_i];
+      _results.push(image.buffer_src === $(target).attr('href') ? openViewer(image) : void 0);
+    }
+    return _results;
   };
 }).call(this);

@@ -20,6 +20,7 @@ spinner_class = 'fullsized_spinner'
 image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
 navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
 
+selector = null
 images = []
 current_image = 0
 options = null
@@ -113,8 +114,33 @@ closeViewer = ->
   $(document).unbind 'keydown', keyPressed
   $(window).unbind 'resize', resizeImage
 
+makeFullsizable = ->
+  images.length = 0
+
+  if options.dynamic
+    sel = $(options.dynamic)
+  else
+    sel = selector
+
+  sel.each ->
+    image = new Image
+    image.buffer_src = $(this).attr('href')
+    image.index = images.length
+    images.push image
+
+    if options.openOnClick
+      $(this).click (e) ->
+        e.preventDefault()
+        openViewer(image)
+
 $.fn.fullsizable = (opt = {}) ->
-  options = opt
+  defaults =
+    detach_id: null
+    navigation: false
+    openOnClick: true
+    dynamic: null
+
+  options = $.extend(defaults, opt)
 
   $('body').append(image_holder)
 
@@ -129,12 +155,16 @@ $.fn.fullsizable = (opt = {}) ->
       e.stopPropagation()
       nextImage()
 
-  this.each ->
-    image = new Image
-    image.buffer_src = this.href
-    image.index = images.length
-    images.push image
+  selector = this
+  makeFullsizable() unless options.dynamic
 
-    $(this).click (e) ->
-      e.preventDefault()
+  return this
+
+$.fullsizableDynamic = (selector, opt = {}) ->
+  $(selector).fullsizable($.extend(opt, {dynamic: selector}))
+
+$.fullsizableOpen = (target) ->
+  makeFullsizable() if options.dynamic
+  for image in images
+    if image.buffer_src == $(target).attr('href')
       openViewer(image)
