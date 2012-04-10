@@ -67,6 +67,9 @@ that should get opened.
 
 
 ## Changelog
+* **1.4** - tba
+  * bugfix: remember scroll position when using detach option
+
 * **1.3** - 25.08.2011
   * add openOnClick option to enable/disable default behavior
   * add dynamic mode for advanced usage scenarios
