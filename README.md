@@ -72,7 +72,7 @@ that should get opened.
 
 
 ## Changelog
-* **1.4** - tba
+* **1.4** - 10.04.2012
   * add closeButton option
   * add clickBehaviour option
   * bugfix: remember scroll position when using detach option
