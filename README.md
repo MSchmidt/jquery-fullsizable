@@ -93,4 +93,4 @@ that should get opened.
   * intelligent preloading
 
 ## Copyright
-(c) 2011 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2012 Matthias Schmidt <http://m-schmidt.eu/>
