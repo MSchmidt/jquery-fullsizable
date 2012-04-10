@@ -12,7 +12,7 @@
   </style>
   <link rel="stylesheet" href="../css/fullsizable.css" type="text/css" />
   <style type="text/css" media="screen">
-    #fullsized_go_prev, #fullsized_go_next {
+    #fullsized_go_prev, #fullsized_go_next, #fullsized_close {
       position: absolute;
       top: 50%;
       display: block;
@@ -26,6 +26,10 @@
     #fullsized_go_next {
       right: 25px;
     }
+    #fullsized_close {
+      top: 0;
+      right: 0;
+    }
   </style>
   <script src="../js/jquery-1.7.2.js" type="text/javascript"></script>
   <script src="../js/jquery.fullsizable.js" type="text/javascript"></script>
@@ -33,7 +37,9 @@
     $(function() {
       $('a').fullsizable({
         detach_id: 'container',
-        navigation: true
+        navigation: true,
+        closeButton: true,
+        clickBehaviour: 'next'
       });
     });
   </script>

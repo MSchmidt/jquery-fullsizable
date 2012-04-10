@@ -12,10 +12,12 @@ Options:
   **detach_id** (optional, defaults to null) - id of an element that will be set to display: none after the curtain loaded.
   **navigation** (optional, defaults to false) - set to true to show next and previous links.
   **openOnClick** (optional, defaults to true) - set to false to disable default behavior which fullsizes an image when clicking on a thumb.
+  **closeButton** (optional, defaults to false) - set to true to show a close link.
+  **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
 */
 
 (function() {
-  var $, closeViewer, container_id, current_image, image_holder, image_holder_id, images, keyPressed, makeFullsizable, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class, stored_scroll_position;
+  var $, closeViewer, close_holder, container_id, current_image, image_holder, image_holder_id, images, keyPressed, makeFullsizable, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class, stored_scroll_position;
 
   $ = jQuery;
 
@@ -28,6 +30,8 @@ Options:
   image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
 
   navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
+
+  close_holder = $('<a id="fullsized_close" href="#close"></a>');
 
   selector = null;
 
@@ -124,7 +128,12 @@ Options:
         $('#' + options.detach_id).css('display', 'none');
         resizeImage();
       }
-      $(container_id).bind('click', closeViewer);
+      if (options.clickBehaviour === 'close') {
+        $(container_id).bind('click', closeViewer);
+      }
+      if (options.clickBehaviour === 'next') {
+        $(container_id).bind('click', nextImage);
+      }
       return $(document).bind('keydown', keyPressed);
     });
   };
@@ -134,7 +143,12 @@ Options:
       $('#' + options.detach_id).css('display', 'block');
       $(window).scrollTop(stored_scroll_position);
     }
-    $(container_id).unbind('click', closeViewer);
+    if (options.clickBehaviour === 'close') {
+      $(container_id).unbind('click', closeViewer);
+    }
+    if (options.clickBehaviour === 'next') {
+      $(container_id).unbind('click', nextImage);
+    }
     $(container_id).fadeOut();
     $(container_id).removeClass(spinner_class);
     $(document).unbind('keydown', keyPressed);
@@ -169,6 +183,8 @@ Options:
       detach_id: null,
       navigation: false,
       openOnClick: true,
+      closeButton: false,
+      clickBehaviour: 'close',
       dynamic: null
     }, opts || {});
     $('body').append(image_holder);
@@ -183,6 +199,14 @@ Options:
         e.preventDefault();
         e.stopPropagation();
         return nextImage();
+      });
+    }
+    if (options.closeButton) {
+      image_holder.append(close_holder);
+      $('#fullsized_close').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return closeViewer();
       });
     }
     selector = this;

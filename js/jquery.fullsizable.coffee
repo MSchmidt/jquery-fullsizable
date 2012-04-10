@@ -11,6 +11,8 @@ Options:
   **detach_id** (optional, defaults to null) - id of an element that will be set to display: none after the curtain loaded.
   **navigation** (optional, defaults to false) - set to true to show next and previous links.
   **openOnClick** (optional, defaults to true) - set to false to disable default behavior which fullsizes an image when clicking on a thumb.
+  **closeButton** (optional, defaults to false) - set to true to show a close link.
+  **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
 ###
 
 $ = jQuery
@@ -20,6 +22,7 @@ image_holder_id = '#fullsized_image_holder'
 spinner_class = 'fullsized_spinner'
 image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
 navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
+close_holder = $('<a id="fullsized_close" href="#close"></a>')
 
 selector = null
 images = []
@@ -105,14 +108,16 @@ openViewer = (image) ->
       stored_scroll_position = $(window).scrollTop()
       $('#' + options.detach_id).css('display', 'none')
       resizeImage()
-    $(container_id).bind 'click', closeViewer
+    $(container_id).bind 'click', closeViewer if options.clickBehaviour == 'close'
+    $(container_id).bind 'click', nextImage if options.clickBehaviour == 'next'
     $(document).bind 'keydown', keyPressed
 
 closeViewer = ->
   if options.detach_id?
     $('#' + options.detach_id).css('display', 'block')
     $(window).scrollTop(stored_scroll_position)
-  $(container_id).unbind 'click', closeViewer
+  $(container_id).unbind 'click', closeViewer if options.clickBehaviour == 'close'
+  $(container_id).unbind 'click', nextImage if options.clickBehaviour == 'next'
   $(container_id).fadeOut()
 
   $(container_id).removeClass(spinner_class)
@@ -143,6 +148,8 @@ $.fn.fullsizable = (opts) ->
     detach_id: null
     navigation: false
     openOnClick: true
+    closeButton: false
+    clickBehaviour: 'close'
     dynamic: null
   , opts || {}
 
@@ -158,6 +165,13 @@ $.fn.fullsizable = (opts) ->
       e.preventDefault()
       e.stopPropagation()
       nextImage()
+
+  if options.closeButton
+    image_holder.append(close_holder)
+    $('#fullsized_close').click (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      closeViewer()
 
   selector = this
   makeFullsizable() unless options.dynamic
