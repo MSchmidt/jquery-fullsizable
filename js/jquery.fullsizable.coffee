@@ -25,6 +25,7 @@ selector = null
 images = []
 current_image = 0
 options = null
+stored_scroll_position = null
 
 resizeImage = ->
   image = images[current_image]
@@ -54,7 +55,7 @@ prevImage = ->
 
 nextImage = ->
   if current_image < images.length - 1
-    showImage(images[current_image + 1], 1) 
+    showImage(images[current_image + 1], 1)
 
 showImage = (image, direction = 1) ->
   current_image = image.index
@@ -101,13 +102,16 @@ openViewer = (image) ->
   showImage(image)
   $(container_id).hide().fadeIn ->
     if options.detach_id?
+      stored_scroll_position = $(window).scrollTop()
       $('#' + options.detach_id).css('display', 'none')
       resizeImage()
     $(container_id).bind 'click', closeViewer
     $(document).bind 'keydown', keyPressed
 
 closeViewer = ->
-  $('#' + options.detach_id).css('display', 'block') if options.detach_id?
+  if options.detach_id?
+    $('#' + options.detach_id).css('display', 'block')
+    $(window).scrollTop(stored_scroll_position)
   $(container_id).unbind 'click', closeViewer
   $(container_id).fadeOut()
 
@@ -134,14 +138,13 @@ makeFullsizable = ->
         e.preventDefault()
         openViewer(image)
 
-$.fn.fullsizable = (opt = {}) ->
-  defaults =
+$.fn.fullsizable = (opts) ->
+  options = $.extend
     detach_id: null
     navigation: false
     openOnClick: true
     dynamic: null
-
-  options = $.extend(defaults, opt)
+  , opts || {}
 
   $('body').append(image_holder)
 
