@@ -1,4 +1,4 @@
-# jQuery fullsizable plugin v1.3
+# jQuery fullsizable plugin
 take full available browser space to show images
 
 ## Example Usage
