@@ -114,7 +114,7 @@ that should get opened.
 
 
 ## Changelog
-* **1.5** - tba
+* **1.5** - 12.04.2012
   * add allowFullscreen option (native HTML5 fullscreen support)
 
 * **1.4** - 10.04.2012

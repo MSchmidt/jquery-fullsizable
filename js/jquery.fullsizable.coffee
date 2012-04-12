@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v1.4
+jQuery fullsizable plugin v1.5
   - take full available browser space to show images
 
 (c) 2011-2012 Matthias Schmidt <http://m-schmidt.eu/>
