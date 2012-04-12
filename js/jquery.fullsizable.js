@@ -14,6 +14,7 @@ Options:
   **openOnClick** (optional, defaults to true) - set to false to disable default behavior which fullsizes an image when clicking on a thumb.
   **closeButton** (optional, defaults to false) - set to true to show a close link.
   **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
+  **allowFullscreen** (optional, defaults to true) - enable native HTML5 fullscreen support in supported browsers.
 */
 
 (function() {
@@ -182,6 +183,7 @@ Options:
       openOnClick: true,
       closeButton: false,
       clickBehaviour: 'close',
+      allowFullscreen: true,
       dynamic: null
     }, opts || {});
     $('body').append($image_holder);
@@ -206,7 +208,7 @@ Options:
         return closeViewer();
       });
     }
-    if (hasFullscreenSupport()) {
+    if (options.allowFullscreen && hasFullscreenSupport()) {
       $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
       $('#fullsized_fullscreen').click(function(e) {
         e.preventDefault();
