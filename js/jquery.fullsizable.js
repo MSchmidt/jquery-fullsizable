@@ -17,7 +17,7 @@ Options:
 */
 
 (function() {
-  var $, closeViewer, close_holder, container_id, current_image, image_holder, image_holder_id, images, keyPressed, makeFullsizable, navigation_holder, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class, stored_scroll_position;
+  var $, $image_holder, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, image_holder_id, images, keyPressed, makeFullsizable, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class, stored_scroll_position, toggleFullscreen;
 
   $ = jQuery;
 
@@ -27,11 +27,7 @@ Options:
 
   spinner_class = 'fullsized_spinner';
 
-  image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
-
-  navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
-
-  close_holder = $('<a id="fullsized_close" href="#close"></a>');
+  $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
 
   selector = null;
 
@@ -150,6 +146,7 @@ Options:
       $(container_id).unbind('click', nextImage);
     }
     $(container_id).fadeOut();
+    closeFullscreen();
     $(container_id).removeClass(spinner_class);
     $(document).unbind('keydown', keyPressed);
     return $(window).unbind('resize', resizeImage);
@@ -187,9 +184,9 @@ Options:
       clickBehaviour: 'close',
       dynamic: null
     }, opts || {});
-    $('body').append(image_holder);
+    $('body').append($image_holder);
     if (options.navigation) {
-      image_holder.append(navigation_holder);
+      $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
       $('#fullsized_go_prev').click(function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -202,11 +199,19 @@ Options:
       });
     }
     if (options.closeButton) {
-      image_holder.append(close_holder);
+      $image_holder.append('<a id="fullsized_close" href="#close"></a>');
       $('#fullsized_close').click(function(e) {
         e.preventDefault();
         e.stopPropagation();
         return closeViewer();
+      });
+    }
+    if (hasFullscreenSupport()) {
+      $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
+      $('#fullsized_fullscreen').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return toggleFullscreen();
       });
     }
     selector = this;
@@ -234,6 +239,44 @@ Options:
       }
     }
     return _results;
+  };
+
+  hasFullscreenSupport = function() {
+    var fs_dom;
+    fs_dom = $image_holder.get(0);
+    if (fs_dom.requestFullScreen || fs_dom.webkitRequestFullScreen || fs_dom.mozRequestFullScreen) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  closeFullscreen = function() {
+    return toggleFullscreen(true);
+  };
+
+  toggleFullscreen = function(force_close) {
+    var fs_dom;
+    fs_dom = $image_holder.get(0);
+    if (fs_dom.requestFullScreen) {
+      if (document.fullScreen || force_close) {
+        return document.exitFullScreen();
+      } else {
+        return fs_dom.requestFullScreen();
+      }
+    } else if (fs_dom.webkitRequestFullScreen) {
+      if (document.webkitIsFullScreen || force_close) {
+        return document.webkitCancelFullScreen();
+      } else {
+        return fs_dom.webkitRequestFullScreen();
+      }
+    } else if (fs_dom.mozRequestFullScreen) {
+      if (document.mozFullScreen || force_close) {
+        return document.mozCancelFullScreen();
+      } else {
+        return fs_dom.mozRequestFullScreen();
+      }
+    }
   };
 
 }).call(this);

@@ -20,9 +20,7 @@ $ = jQuery
 container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
 spinner_class = 'fullsized_spinner'
-image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
-navigation_holder = $('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
-close_holder = $('<a id="fullsized_close" href="#close"></a>')
+$image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
 
 selector = null
 images = []
@@ -119,6 +117,7 @@ closeViewer = ->
   $(container_id).unbind 'click', closeViewer if options.clickBehaviour == 'close'
   $(container_id).unbind 'click', nextImage if options.clickBehaviour == 'next'
   $(container_id).fadeOut()
+  closeFullscreen()
 
   $(container_id).removeClass(spinner_class)
   $(document).unbind 'keydown', keyPressed
@@ -153,10 +152,10 @@ $.fn.fullsizable = (opts) ->
     dynamic: null
   , opts || {}
 
-  $('body').append(image_holder)
+  $('body').append($image_holder)
 
   if options.navigation
-    image_holder.append(navigation_holder)
+    $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
     $('#fullsized_go_prev').click (e) ->
       e.preventDefault()
       e.stopPropagation()
@@ -167,11 +166,18 @@ $.fn.fullsizable = (opts) ->
       nextImage()
 
   if options.closeButton
-    image_holder.append(close_holder)
+    $image_holder.append('<a id="fullsized_close" href="#close"></a>')
     $('#fullsized_close').click (e) ->
       e.preventDefault()
       e.stopPropagation()
       closeViewer()
+
+  if hasFullscreenSupport()
+    $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>')
+    $('#fullsized_fullscreen').click (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      toggleFullscreen()
 
   selector = this
   makeFullsizable() unless options.dynamic
@@ -186,3 +192,31 @@ $.fullsizableOpen = (target) ->
   for image in images
     if image.buffer_src == $(target).attr('href')
       openViewer(image)
+
+hasFullscreenSupport = ->
+  fs_dom = $image_holder.get(0)
+  if fs_dom.requestFullScreen or fs_dom.webkitRequestFullScreen or fs_dom.mozRequestFullScreen
+    return true
+  else
+    return false
+
+closeFullscreen = ->
+  toggleFullscreen(true)
+
+toggleFullscreen = (force_close)->
+  fs_dom = $image_holder.get(0)
+  if fs_dom.requestFullScreen
+    if document.fullScreen or force_close
+      document.exitFullScreen()
+    else
+      fs_dom.requestFullScreen()
+  else if fs_dom.webkitRequestFullScreen
+    if document.webkitIsFullScreen or force_close
+      document.webkitCancelFullScreen()
+    else
+      fs_dom.webkitRequestFullScreen()
+  else if fs_dom.mozRequestFullScreen
+    if document.mozFullScreen or force_close
+      document.mozCancelFullScreen()
+    else
+      fs_dom.mozRequestFullScreen()
