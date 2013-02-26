@@ -1,0 +1,31 @@
+{
+  "name": "fullsizable",
+  "version": "1.6.0",
+  "title": "jQuery fullsizable",
+  "author": {
+    "name": "Matthias Schmidt",
+    "url": "http://m-schmidt.eu"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.6"
+  },
+  "description": "jQuery plugin to take full available browser space for image viewing. Also supports the native HTML5 fullscreen API in modern browsers.",
+  "keywords": [
+    "jquery",
+    "fullsizable",
+    "lightbox",
+    "image",
+    "photo",
+    "gallery",
+    "fullscreen"
+  ],
+  "homepage": "https://github.com/MSchmidt/jquery-fullsizable",
+  "docs": "https://github.com/MSchmidt/jquery-fullsizable/blob/master/README.md",
+  "bugs": "https://github.com/MSchmidt/jquery-fullsizable/issues"
+}

@@ -119,6 +119,9 @@ that should get opened.
 
 
 ## Changelog
+* **1.6** - 26.02.2013
+  * open sourced under MIT, no technical changes
+
 * **1.5** - 12.04.2012
   * add allowFullscreen option (native HTML5 fullscreen support)
 
