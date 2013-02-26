@@ -3,6 +3,10 @@ jQuery plugin to take full available browser space for image viewing. Also suppo
 modern browsers.
 
 
+## Demo
+
+Have a look at <https://getmatilda.com/blogs/f71a03-london> and click on any image to see it with this plugin.
+
 ## Example Usage
 Use with default settings:
 
@@ -139,4 +143,4 @@ that should get opened.
 
 
 ## Copyright
-(c) 2011-2012 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2013 Matthias Schmidt <http://m-schmidt.eu/>
