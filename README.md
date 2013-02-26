@@ -5,7 +5,8 @@ modern browsers.
 
 ## Demo
 
-Have a look at <https://getmatilda.com/blogs/f71a03-london> and click on any image to see it with this plugin.
+Click on any image at <https://getmatilda.com/blogs/f71a03-london> see jquery-fullsizable in action.
+
 
 ## Example Usage
 Use with default settings:

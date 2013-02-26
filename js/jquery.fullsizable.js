@@ -3,7 +3,7 @@
 jQuery fullsizable plugin v1.5
   - take full available browser space to show images
 
-(c) 2011-2012 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2013 Matthias Schmidt <http://m-schmidt.eu/>
 
 Example Usage:
   $('a.fullsizable').fullsizable();
