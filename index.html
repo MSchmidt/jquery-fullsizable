@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>jQuery fullsizable by MSchmidt</title>
+
+  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="stylesheets/prism.css">
+  <link rel="stylesheet" href="stylesheets/jquery-fullsizable.css">
+  <link rel="stylesheet" href="stylesheets/jquery-fullsizable-theme.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <script src="javascripts/prism.js"></script>
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div id="wrapper">
+    <header>
+      <h1>jquery-fullsizable</h1>
+      <p>Kind of a lightbox, but better.</p>
+
+      <p><a href="https://github.com/MSchmidt/jquery-fullsizable">View the Project on GitHub <small>MSchmidt/jquery-fullsizable</small></a></p>
+
+      <ul>
+        <li><a href="https://github.com/MSchmidt/jquery-fullsizable/archive/v2.0.0.zip">Download <strong>ZIP File</strong></a></li>
+        <li><a href="https://github.com/MSchmidt/jquery-fullsizable/archive/v2.0.0.tar.gz">Download <strong>TAR Ball</strong></a></li>
+        <li><a href="https://github.com/MSchmidt/jquery-fullsizable">View On <strong>GitHub</strong></a></li>
+      </ul>
+      <small>v2.0.0 - released 13.07.2014</small>
+    </header>
+
+    <section>
+      <h3>Use available browser space to show images</h3>
+
+      <p>Make use of the full available browser space for enjoyable image viewing. Also supports the native HTML5 fullscreen API in modern browsers.</p>
+      <p>For the most simple use case load the nessecary files and call the plugin after the <i>ready</i> event is fired:</p>
+
+      <pre><code class="language-javascript">&lt;link rel="stylesheet" href="css/fullsizable.css"&gt;
+&lt;script src="http://code.jquery.com/jquery-2.1.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/jquery.fullsizable.2.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $(function() {
+    $('a.fullsizable').fullsizable();
+  });
+&lt;/script&gt;</code></pre>
+
+      <p>For more advanced usage, please refer to the <a href="https://github.com/MSchmidt/jquery-fullsizable/blob/master/README.md">full documentation</a>.</p>
+
+      <h3>Demo gallery</h3>
+
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTYvNDMvMzg2L0lNR180NTU2LmpwZyJdXQ/IMG_4556.jpg" class="fullsizable">
+        <img alt="London Sunset" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTYvNDMvMzg2L0lNR180NTU2LmpwZyJdLFsicCIsInRodW1iIiwiMTQweDE0MCMiXV0/IMG_4556.jpg">
+      </a>
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTcvNDYvMTQ0L0lNR180ODUxLmpwZyJdXQ/IMG_4851.jpg" class="fullsizable">
+        <img alt="London Eye 1" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTcvNDYvMTQ0L0lNR180ODUxLmpwZyJdLFsicCIsInRodW1iIiwiMTQweDE0MCMiXV0/IMG_4851.jpg">
+      </a>
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTcvMTYvMTc2L0lNR180NzEzLmpwZyJdXQ/IMG_4713.jpg" class="fullsizable">
+        <img alt="London Eye 2" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMDkvNTcvMTYvMTc2L0lNR180NzEzLmpwZyJdLFsicCIsInRodW1iIiwiMTQweDE0MCMiXV0/IMG_4713.jpg">
+      </a>
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDEvMjEvNzUvSU1HXzU4ODcuanBnIl1d/IMG_5887.jpg" class="fullsizable">
+        <img alt="Big Ben" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDEvMjEvNzUvSU1HXzU4ODcuanBnIl0sWyJwIiwidGh1bWIiLCIxNDB4MTQwIyJdXQ/IMG_5887.jpg">
+      </a>
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDEvMjgvNTM1L0lNR181ODk4LmpwZyJdXQ/IMG_5898.jpg" class="fullsizable">
+        <img alt="Tower Bridge" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDEvMjgvNTM1L0lNR181ODk4LmpwZyJdLFsicCIsInRodW1iIiwiMTQweDE0MCMiXV0/IMG_5898.jpg">
+      </a>
+      <a href="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDQvMTAvNjM0L0lNR182MTk0LmpwZyJdXQ/IMG_6194.jpg" class="fullsizable">
+        <img alt="Piccadilly Circus" src="https://cloud.getmatilda.com/cloud/W1siZiIsIjIwMTEvMDkvMTIvMTIvNDQvMTAvNjM0L0lNR182MTk0LmpwZyJdLFsicCIsInRodW1iIiwiMTQweDE0MCMiXV0/IMG_6194.jpg">
+      </a>
+
+      <p>Click/tap on any image to see <i>fullsizable</i> in action. If you are on a touch device you can also swipe between images.</p>
+
+
+      <h3>Advanced features and documentation</h3>
+
+      <ul>
+        <li>tested in all major browsers (including mobile browsers)</li>
+        <li>responsive by default</li>
+        <li>exposes events and triggers for great customization</li>
+        <li>can easily work with touch events</li>
+        <li>can be styled to fit your required look easily</li>
+        <li>works great with pure javascript pages (AngularJS, Ember, Backbone, etc.)</li>
+        <li>only 4.8 KB (minified)</li>
+      </ul>
+      <p>Please refer to the <a href="https://github.com/MSchmidt/jquery-fullsizable/blob/master/README.md">full documentation</a>
+        to learn more about the advanced features.</p>
+
+
+      <h3>Usage examples</h3>
+
+      <p>Find more <a href="https://github.com/MSchmidt/jquery-fullsizable/tree/master/examples">usage example on GitHub</a>.</p>
+
+
+      <h3>Author and support</h3>
+
+      <p>This plugin is maintained by <a href="http://m-schmidt.eu/">Matthias Schmidt</a>.
+        You can reach me on twitter (<a href="https://twitter.com/wolax">wolax</a>) or GitHub (<a href="https://github.com/MSchmidt">MSchmidt</a>).</p>
+    </section>
+
+    <footer>
+      <p>This project is maintained by <a href="https://github.com/MSchmidt">MSchmidt</a></p>
+      <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+    </footer>
+  </div>
+
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/21a6c721a15d8fee2e050de80b55514f1f48d819/jquery.touchSwipe.min.js"></script>
+  <script src="https://raw.githubusercontent.com/MSchmidt/jquery-fullsizable/3741737d73ea0991d6415fe650442f177016bed1/js/jquery.fullsizable.2.0.min.js"></script>
+  <script>
+    $('a.fullsizable').fullsizable({
+      detach_id: 'wrapper'
+    });
+
+    $(document).on('fullsizable:opened', function(){
+      $("#jquery-fullsizable").swipe({
+        swipeLeft: function(){
+          $(document).trigger('fullsizable:next')
+        },
+        swipeRight: function(){
+          $(document).trigger('fullsizable:prev')
+        },
+        swipeUp: function(){
+          $(document).trigger('fullsizable:close')
+        }
+      });
+    });
+  </script>
+  <script src="javascripts/scale.fix.js"></script>
+
+</body>
+</html>
