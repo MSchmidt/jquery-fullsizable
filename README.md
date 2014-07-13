@@ -150,6 +150,7 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 ## Changelog
 * **2.0** - 13.07.2014
   * add events and triggers for more advanced usage (e.g. adding touch events)
+  * hide UI elements while navigating with keyboard or other events
   * better defaults for most common use case of having a gallery with multiple images
   * clean up DOM after the viewer is closed
   * remove dynamic mode and add options to achieve the same
