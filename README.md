@@ -183,4 +183,4 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Copyright
-(c) 2011-2013 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
