@@ -1,0 +1,45 @@
+#fullsized_go_prev, #fullsized_go_next {
+  position: absolute;
+  top: 40%;
+  display: block;
+  width: 32px;
+  height: 126px;
+}
+#fullsized_go_prev {
+  left: 0;
+  background: url('jquery-fullsizable.png');
+}
+#fullsized_go_prev:hover {
+    background-position: 0 -126px;
+}
+#fullsized_go_next {
+  right: 0;
+  background: url('jquery-fullsizable.png') -32px 0;
+}
+#fullsized_go_next:hover {
+  background-position: -32px -126px;
+}
+#fullsized_close, #fullsized_fullscreen {
+  position: absolute;
+  top: 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+#fullsized_close {
+  right: 0;
+  background: url('jquery-fullsizable.png') -64px 0;
+}
+#fullsized_close:hover {
+  background-position: -64px -32px;
+}
+#fullsized_fullscreen {
+  right: 40px;
+  background: url('jquery-fullsizable.png') -96px 0;
+}
+#fullsized_fullscreen:hover {
+  background-position: -96px -32px;
+}
+:fullscreen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }
+:-webkit-full-screen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }
+:-moz-full-screen #fullsized_fullscreen { background-position: -96px -64px; &:hover {background-position: -96px -96px;} }

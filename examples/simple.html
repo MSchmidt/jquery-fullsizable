@@ -10,7 +10,7 @@
       min-height: 1000px;
     }
   </style>
-  <link rel="stylesheet" href="../css/fullsizable.css" type="text/css" />
+  <link rel="stylesheet" href="../css/jquery-fullsizable.css" />
   <style type="text/css" media="screen">
     #fullsized_go_prev, #fullsized_go_next, #fullsized_close, #fullsized_fullscreen {
       position: absolute;
@@ -39,14 +39,12 @@
     :-webkit-full-screen #fullsized_fullscreen { background-color: blue; }
     :-moz-full-screen #fullsized_fullscreen { background-color: blue; }
   </style>
-  <script src="../js/jquery-1.7.2.js" type="text/javascript"></script>
-  <script src="../js/jquery.fullsizable.js" type="text/javascript"></script>
-  <script type="text/javascript" charset="utf-8">
+  <script src="../js/jquery-1.7.2.js"></script>
+  <script src="../js/jquery.fullsizable.js"></script>
+  <script>
     $(function() {
       $('a').fullsizable({
         detach_id: 'container',
-        navigation: true,
-        closeButton: true,
         clickBehaviour: 'next'
       });
     });

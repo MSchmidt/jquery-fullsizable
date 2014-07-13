@@ -5,21 +5,34 @@
   <title>jQuery.fullsizable example/demo</title>
   <meta name="description" content="jQuery fullsizable Example" />
   <meta name="author" content="Matthias Schmidt - http://m-schmidt.eu" />
-  <link rel="stylesheet" href="../css/fullsizable.css" type="text/css" />
-  <script src="../js/jquery-1.7.2.js" type="text/javascript"></script>
-  <script src="../js/jquery.fullsizable.js" type="text/javascript"></script>
-  <script type="text/javascript" charset="utf-8">
+  <style type="text/css" media="screen">
+    #container {
+      min-height: 1000px;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/jquery-fullsizable.css" />
+  <link rel="stylesheet" href="../css/jquery-fullsizable-theme.css" />
+  <script src="../js/jquery-1.7.2.js"></script>
+  <script src="https://raw.githubusercontent.com/mattbryson/TouchSwipe-Jquery-Plugin/21a6c721a15d8fee2e050de80b55514f1f48d819/jquery.touchSwipe.min.js"></script>
+  <script src="../js/jquery.fullsizable.js"></script>
+  <script>
     $(function() {
       $('a').fullsizable({
-        openOnClick: false
+        detach_id: 'container'
       });
 
-      $('a').click(function(e) {
-        e.preventDefault();
-      });
-      $('a').dblclick(function(e) {
-        e.preventDefault();
-        $.fullsizableOpen(this);
+      $(document).on('fullsizable:opened', function(){
+        $("#jquery-fullsizable").swipe({
+          swipeLeft: function(){
+            $(document).trigger('fullsizable:next')
+          },
+          swipeRight: function(){
+            $(document).trigger('fullsizable:prev')
+          },
+          swipeUp: function(){
+            $(document).trigger('fullsizable:close')
+          }
+        });
       });
     });
   </script>
@@ -27,8 +40,7 @@
 
 <body>
   <h1>jQuery.fullsizable</h1>
-  <h2>Custom event to open fullsized view</h2>
-  <p>Try double clicking any image to see it fullsized!</p>
+  <h2>Themed and with touch events</h2>
   <div id="container">
     <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/1000px-Locomotives-Roundhouse2.jpg">
       <img title="Locomotives Roundhouse"

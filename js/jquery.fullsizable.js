@@ -1,24 +1,25 @@
-
 /*
-jQuery fullsizable plugin v1.6
+jQuery fullsizable plugin v2.0 <https://github.com/MSchmidt/jquery-fullsizable>
   - take full available browser space to show images
 
-(c) 2011-2013 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
 
 Example Usage:
   $('a.fullsizable').fullsizable();
 
 Options:
-  **detach_id** (optional, defaults to null) - id of an element that will be set to display: none after the curtain loaded.
-  **navigation** (optional, defaults to false) - set to true to show next and previous links.
+  **detach_id** (optional, defaults to null) - id of an element that will temporarely be set to ``display: none`` after the curtain loaded.
+  **navigation** (optional, defaults to true) - show next and previous links when working with a set of images.
+  **closeButton** (optional, defaults to true) - show a close link.
+  **fullscreenButton** (optional, defaults to true) - show full screen button for native HTML5 fullscreen support in supported browsers.
   **openOnClick** (optional, defaults to true) - set to false to disable default behavior which fullsizes an image when clicking on a thumb.
-  **closeButton** (optional, defaults to false) - set to true to show a close link.
   **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
-  **allowFullscreen** (optional, defaults to true) - enable native HTML5 fullscreen support in supported browsers.
-*/
+  **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
+  **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
+ */
 
 (function() {
-  var $, $image_holder, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, image_holder_id, images, keyPressed, makeFullsizable, nextImage, openViewer, options, preloadImage, prevImage, resizeImage, selector, showImage, spinner_class, stored_scroll_position, toggleFullscreen;
+  var $, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
 
   $ = jQuery;
 
@@ -29,8 +30,6 @@ Options:
   spinner_class = 'fullsized_spinner';
 
   $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>');
-
-  selector = null;
 
   images = [];
 
@@ -43,7 +42,9 @@ Options:
   resizeImage = function() {
     var image;
     image = images[current_image];
-    if (image.ratio == null) image.ratio = (image.height / image.width).toFixed(2);
+    if (image.ratio == null) {
+      image.ratio = (image.naturalHeight / image.naturalWidth).toFixed(2);
+    }
     if ($(window).height() / image.ratio > $(window).width()) {
       $(image).width($(window).width());
       $(image).height($(window).width() * image.ratio);
@@ -56,29 +57,51 @@ Options:
   };
 
   keyPressed = function(e) {
-    if (e.keyCode === 27) closeViewer();
-    if (e.keyCode === 37) prevImage();
-    if (e.keyCode === 39) return nextImage();
-  };
-
-  prevImage = function() {
-    if (current_image > 0) return showImage(images[current_image - 1], -1);
-  };
-
-  nextImage = function() {
-    if (current_image < images.length - 1) {
-      return showImage(images[current_image + 1], 1);
+    if (e.keyCode === 27) {
+      closeViewer();
+    }
+    if (e.keyCode === 37) {
+      prevImage(true);
+    }
+    if (e.keyCode === 39) {
+      return nextImage(true);
     }
   };
 
-  showImage = function(image, direction) {
-    if (direction == null) direction = 1;
+  prevImage = function(shouldHideChrome) {
+    if (shouldHideChrome == null) {
+      shouldHideChrome = false;
+    }
+    if (current_image > 0) {
+      return showImage(images[current_image - 1], -1, shouldHideChrome);
+    }
+  };
+
+  nextImage = function(shouldHideChrome) {
+    if (shouldHideChrome == null) {
+      shouldHideChrome = false;
+    }
+    if (current_image < images.length - 1) {
+      return showImage(images[current_image + 1], 1, shouldHideChrome);
+    }
+  };
+
+  showImage = function(image, direction, shouldHideChrome) {
+    if (direction == null) {
+      direction = 1;
+    }
+    if (shouldHideChrome == null) {
+      shouldHideChrome = false;
+    }
     current_image = image.index;
     $(image_holder_id).hide();
     $(image_holder_id).html(image);
     if (options.navigation) {
-      $('#fullsized_go_prev').toggle(current_image !== 0);
-      $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+      if (shouldHideChrome === true) {
+        hideChrome();
+      } else {
+        showChrome();
+      }
     }
     if (image.loaded != null) {
       $(container_id).removeClass(spinner_class);
@@ -117,6 +140,7 @@ Options:
   };
 
   openViewer = function(image) {
+    $('body').append($image_holder);
     $(window).bind('resize', resizeImage);
     showImage(image);
     return $(container_id).hide().fadeIn(function() {
@@ -125,13 +149,8 @@ Options:
         $('#' + options.detach_id).css('display', 'none');
         resizeImage();
       }
-      if (options.clickBehaviour === 'close') {
-        $(container_id).bind('click', closeViewer);
-      }
-      if (options.clickBehaviour === 'next') {
-        $(container_id).bind('click', nextImage);
-      }
-      return $(document).bind('keydown', keyPressed);
+      bindCurtainEvents();
+      return $(document).trigger('fullsizable:opened');
     });
   };
 
@@ -140,28 +159,18 @@ Options:
       $('#' + options.detach_id).css('display', 'block');
       $(window).scrollTop(stored_scroll_position);
     }
-    if (options.clickBehaviour === 'close') {
-      $(container_id).unbind('click', closeViewer);
-    }
-    if (options.clickBehaviour === 'next') {
-      $(container_id).unbind('click', nextImage);
-    }
-    $(container_id).fadeOut();
+    $(container_id).fadeOut(function() {
+      return $image_holder.remove();
+    });
     closeFullscreen();
     $(container_id).removeClass(spinner_class);
-    $(document).unbind('keydown', keyPressed);
+    unbindCurtainEvents();
     return $(window).unbind('resize', resizeImage);
   };
 
   makeFullsizable = function() {
-    var sel;
     images.length = 0;
-    if (options.dynamic) {
-      sel = $(options.dynamic);
-    } else {
-      sel = selector;
-    }
-    return sel.each(function() {
+    return $(options.selector).each(function() {
       var image;
       image = new Image;
       image.buffer_src = $(this).attr('href');
@@ -170,31 +179,24 @@ Options:
       if (options.openOnClick) {
         return $(this).click(function(e) {
           e.preventDefault();
+          if (options.reloadOnOpen) {
+            makeFullsizable();
+          }
           return openViewer(image);
         });
       }
     });
   };
 
-  $.fn.fullsizable = function(opts) {
-    options = $.extend({
-      detach_id: null,
-      navigation: false,
-      openOnClick: true,
-      closeButton: false,
-      clickBehaviour: 'close',
-      allowFullscreen: true,
-      dynamic: null
-    }, opts || {});
-    $('body').append($image_holder);
+  prepareCurtain = function() {
     if (options.navigation) {
       $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
-      $('#fullsized_go_prev').click(function(e) {
+      $(document).on('click', '#fullsized_go_prev', function(e) {
         e.preventDefault();
         e.stopPropagation();
         return prevImage();
       });
-      $('#fullsized_go_next').click(function(e) {
+      $(document).on('click', '#fullsized_go_next', function(e) {
         e.preventDefault();
         e.stopPropagation();
         return nextImage();
@@ -202,45 +204,94 @@ Options:
     }
     if (options.closeButton) {
       $image_holder.append('<a id="fullsized_close" href="#close"></a>');
-      $('#fullsized_close').click(function(e) {
+      $(document).on('click', '#fullsized_close', function(e) {
         e.preventDefault();
         e.stopPropagation();
         return closeViewer();
       });
     }
-    if (options.allowFullscreen && hasFullscreenSupport()) {
+    if (options.fullscreenButton && hasFullscreenSupport()) {
       $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
-      $('#fullsized_fullscreen').click(function(e) {
+      $(document).on('click', '#fullsized_fullscreen', function(e) {
         e.preventDefault();
         e.stopPropagation();
         return toggleFullscreen();
       });
     }
-    selector = this;
-    if (!options.dynamic) makeFullsizable();
-    return this;
-  };
-
-  $.fullsizableDynamic = function(selector, opt) {
-    if (opt == null) opt = {};
-    return $(selector).fullsizable($.extend(opt, {
-      dynamic: selector
-    }));
-  };
-
-  $.fullsizableOpen = function(target) {
-    var image, _i, _len, _results;
-    if (options.dynamic) makeFullsizable();
-    _results = [];
-    for (_i = 0, _len = images.length; _i < _len; _i++) {
-      image = images[_i];
-      if (image.buffer_src === $(target).attr('href')) {
-        _results.push(openViewer(image));
-      } else {
-        _results.push(void 0);
-      }
+    switch (options.clickBehaviour) {
+      case 'close':
+        return $(document).on('click', container_id, closeViewer);
+      case 'next':
+        return $(document).on('click', container_id, function() {
+          return nextImage(true);
+        });
     }
-    return _results;
+  };
+
+  bindCurtainEvents = function() {
+    $(document).bind('keydown', keyPressed);
+    $(document).bind('fullsizable:next', function() {
+      return nextImage(true);
+    });
+    $(document).bind('fullsizable:prev', function() {
+      return prevImage(true);
+    });
+    return $(document).bind('fullsizable:close', closeViewer);
+  };
+
+  unbindCurtainEvents = function() {
+    $(document).unbind('keydown', keyPressed);
+    $(document).unbind('fullsizable:next');
+    $(document).unbind('fullsizable:prev');
+    return $(document).unbind('fullsizable:close');
+  };
+
+  hideChrome = function() {
+    $image_holder.find('a').toggle(false);
+    return $image_holder.bind('mousemove', showChrome);
+  };
+
+  showChrome = function() {
+    $image_holder.unbind('mousemove', showChrome);
+    $('#fullsized_close, #fullsized_fullscreen').toggle(true);
+    $('#fullsized_go_prev').toggle(current_image !== 0);
+    return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+  };
+
+  $.fn.fullsizable = function(opts) {
+    options = $.extend({
+      selector: this.selector,
+      detach_id: null,
+      navigation: true,
+      closeButton: true,
+      fullscreenButton: true,
+      openOnClick: true,
+      clickBehaviour: 'close',
+      preload: true,
+      reloadOnOpen: false
+    }, opts || {});
+    prepareCurtain();
+    if (options.preload) {
+      makeFullsizable();
+    }
+    $(document).bind('fullsizable:reload', makeFullsizable);
+    $(document).bind('fullsizable:open', function(e, target) {
+      var image, _i, _len, _results;
+      if (options.reloadOnOpen) {
+        makeFullsizable();
+      }
+      _results = [];
+      for (_i = 0, _len = images.length; _i < _len; _i++) {
+        image = images[_i];
+        if (image.buffer_src === $(target).attr('href')) {
+          _results.push(openViewer(image));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    });
+    return this;
   };
 
   hasFullscreenSupport = function() {
