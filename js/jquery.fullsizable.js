@@ -1,5 +1,5 @@
 /*
-jQuery fullsizable plugin v2.0 <https://github.com/MSchmidt/jquery-fullsizable>
+jQuery fullsizable plugin v2.0.1
   - take full available browser space to show images
 
 (c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
@@ -19,7 +19,7 @@ Options:
  */
 
 (function() {
-  var $, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
+  var $, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
 
   $ = jQuery;
 
@@ -247,12 +247,30 @@ Options:
   };
 
   hideChrome = function() {
-    $image_holder.find('a').toggle(false);
-    return $image_holder.bind('mousemove', showChrome);
+    var $chrome;
+    $chrome = $image_holder.find('a');
+    if ($chrome.is(':visible') === true) {
+      $chrome.toggle(false);
+      return $image_holder.bind('mousemove', mouseMovement);
+    }
+  };
+
+  mouseStart = null;
+
+  mouseMovement = function(event) {
+    var distance;
+    if (mouseStart === null) {
+      mouseStart = [event.clientX, event.clientY];
+    }
+    distance = Math.round(Math.sqrt(Math.pow(mouseStart[1] - event.clientY, 2) + Math.pow(mouseStart[0] - event.clientX, 2)));
+    if (distance >= 10) {
+      $image_holder.unbind('mousemove', mouseMovement);
+      mouseStart = null;
+      return showChrome();
+    }
   };
 
   showChrome = function() {
-    $image_holder.unbind('mousemove', showChrome);
     $('#fullsized_close, #fullsized_fullscreen').toggle(true);
     $('#fullsized_go_prev').toggle(current_image !== 0);
     return $('#fullsized_go_next').toggle(current_image !== images.length - 1);

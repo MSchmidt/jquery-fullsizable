@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v2.0 <https://github.com/MSchmidt/jquery-fullsizable>
+jQuery fullsizable plugin v2.0.1
   - take full available browser space to show images
 
 (c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
@@ -184,11 +184,21 @@ unbindCurtainEvents = ->
   $(document).unbind 'fullsizable:close'
 
 hideChrome = ->
-  $image_holder.find('a').toggle(false)
-  $image_holder.bind 'mousemove', showChrome
+  $chrome = $image_holder.find('a')
+  if $chrome.is(':visible') == true
+    $chrome.toggle(false)
+    $image_holder.bind 'mousemove', mouseMovement
+
+mouseStart = null
+mouseMovement = (event) ->
+  mouseStart = [event.clientX, event.clientY] if mouseStart == null
+  distance = Math.round(Math.sqrt(Math.pow(mouseStart[1] - event.clientY, 2) + Math.pow(mouseStart[0] - event.clientX, 2)))
+  if distance >= 10
+    $image_holder.unbind 'mousemove', mouseMovement
+    mouseStart = null
+    showChrome()
 
 showChrome = ->
-  $image_holder.unbind 'mousemove', showChrome
   $('#fullsized_close, #fullsized_fullscreen').toggle(true)
   $('#fullsized_go_prev').toggle(current_image != 0)
   $('#fullsized_go_next').toggle(current_image != images.length - 1)

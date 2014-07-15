@@ -2,6 +2,8 @@
 jQuery plugin to make use of the full available browser space for enjoyable image viewing. Also supports the native HTML5 fullscreen API in
 modern browsers.
 
+jQuery Plugin page: <http://plugins.jquery.com/fullsizable/>
+
 
 ## Demo
 
@@ -148,6 +150,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
+* **2.0.1** - 15.07.2014
+  * hiding UI elements works more reliably now
+
 * **2.0** - 13.07.2014
   * add events and triggers for more advanced usage (e.g. adding touch events)
   * hide UI elements while navigating with keyboard or other events
