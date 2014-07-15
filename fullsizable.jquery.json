@@ -1,6 +1,6 @@
 {
   "name": "fullsizable",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "title": "jQuery fullsizable",
   "author": {
     "name": "Matthias Schmidt",
@@ -23,7 +23,8 @@
     "image",
     "photo",
     "gallery",
-    "fullscreen"
+    "fullscreen",
+    "responsive"
   ],
   "homepage": "http://mschmidt.github.io/jquery-fullsizable",
   "docs": "https://github.com/MSchmidt/jquery-fullsizable/blob/master/README.md",
