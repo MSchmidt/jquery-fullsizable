@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v2.0.1
+jQuery fullsizable plugin v2.0.2
   - take full available browser space to show images
 
 (c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
@@ -102,7 +102,7 @@ preloadImage = (direction) ->
     this.loaded = true
   preload_image.src = preload_image.buffer_src if preload_image.src == ''
 
-openViewer = (image) ->
+openViewer = (image, opening_selector) ->
   $('body').append($image_holder)
   $(window).bind 'resize', resizeImage
   showImage(image)
@@ -112,7 +112,7 @@ openViewer = (image) ->
       $('#' + options.detach_id).css('display', 'none')
       resizeImage()
     bindCurtainEvents()
-    $(document).trigger('fullsizable:opened')
+    $(document).trigger('fullsizable:opened', opening_selector)
 
 closeViewer = ->
   if options.detach_id?
@@ -139,7 +139,7 @@ makeFullsizable = ->
       $(this).click (e) ->
         e.preventDefault()
         makeFullsizable() if options.reloadOnOpen
-        openViewer(image)
+        openViewer(image, this)
 
 prepareCurtain = ->
   if options.navigation
@@ -225,7 +225,7 @@ $.fn.fullsizable = (opts) ->
     makeFullsizable() if options.reloadOnOpen
     for image in images
       if image.buffer_src == $(target).attr('href')
-        openViewer(image)
+        openViewer(image, target)
 
   return this
 
