@@ -150,6 +150,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
+* **2.0.2** - 03.09.2014
+  * fullsizable:opened returns selector of element which triggered the viewer
+
 * **2.0.1** - 15.07.2014
   * hiding UI elements works more reliably now
 
