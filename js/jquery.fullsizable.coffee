@@ -170,6 +170,7 @@ prepareCurtain = ->
   switch options.clickBehaviour
     when 'close' then $(document).on 'click', container_id, closeViewer
     when 'next' then $(document).on 'click', container_id, -> nextImage(true)
+    else $(document).on 'click', container_id, options.clickBehaviour
 
 bindCurtainEvents = ->
   $(document).bind 'keydown', keyPressed
