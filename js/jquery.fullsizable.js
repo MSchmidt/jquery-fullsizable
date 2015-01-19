@@ -229,6 +229,8 @@ Options:
         return $(document).on('click', container_id, function() {
           return nextImage(true);
         });
+      default:
+        return $(document).on('click', container_id, options.clickBehaviour);
     }
   };
 
