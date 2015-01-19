@@ -150,6 +150,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
+* **2.0.3** - to be released
+  * allow custom function for clickBehaviour option
+
 * **2.0.2** - 03.09.2014
   * fullsizable:opened returns selector of element which triggered the viewer
 
@@ -191,5 +194,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
   * intelligent preloading
 
 
+## Contributing
+This plugin is written in CoffeeScript and then "compiled" into JavaScript. Please try to make changes to the ``jquery.fullsizable.coffee`` file directly and compile with ``coffee -c js/jquery.fullsizable.coffee``.
+
+
 ## Copyright
-(c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/>
