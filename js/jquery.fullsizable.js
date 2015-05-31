@@ -18,6 +18,7 @@ Options:
   **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
+  **looped** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
  */
 
 (function() {
@@ -76,6 +77,8 @@ Options:
     }
     if (current_image > 0) {
       return showImage(images[current_image - 1], -1, shouldHideChrome);
+    }else if(options.looped){
+      return showImage(images[images.length - 1], -1, shouldHideChrome);
     }
   };
 
@@ -85,6 +88,8 @@ Options:
     }
     if (current_image < images.length - 1) {
       return showImage(images[current_image + 1], 1, shouldHideChrome);
+    }else if(options.looped){
+      return showImage(images[0], 1, shouldHideChrome);
     }
   };
 
@@ -276,8 +281,10 @@ Options:
 
   showChrome = function() {
     $('#fullsized_close, #fullsized_fullscreen').toggle(true);
-    $('#fullsized_go_prev').toggle(current_image !== 0);
-    return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+    if(!options.looped){
+      $('#fullsized_go_prev').toggle(current_image !== 0);
+      return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+    }
   };
 
   $.fn.fullsizable = function(opts) {
@@ -290,7 +297,8 @@ Options:
       openOnClick: true,
       clickBehaviour: 'close',
       preload: true,
-      reloadOnOpen: false
+      reloadOnOpen: false,
+      looped: false
     }, opts || {});
     prepareCurtain();
     if (options.preload) {
