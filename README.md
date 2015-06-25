@@ -48,6 +48,8 @@ Style with ``#fullsized_fullscreen``
 
 **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
 
+**looped** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+
 
 ## Styling
 The packaged ``fullsizable.css`` stylesheet provides only the bare bones to make fullsizable work. Everything
