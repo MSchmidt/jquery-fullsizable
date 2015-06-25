@@ -2,7 +2,7 @@
 jQuery fullsizable plugin v2.0.2
   - take full available browser space to show images
 
-(c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/>
 
 Example Usage:
   $('a.fullsizable').fullsizable();
@@ -16,6 +16,7 @@ Options:
   **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
+  **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
 ###
 
 $ = jQuery
@@ -55,10 +56,14 @@ keyPressed = (e) ->
 prevImage = (shouldHideChrome = false) ->
   if current_image > 0
     showImage(images[current_image - 1], -1, shouldHideChrome)
+  else if options.loop
+    showImage(images[images.length - 1], -1, shouldHideChrome)
 
 nextImage = (shouldHideChrome = false) ->
   if current_image < images.length - 1
     showImage(images[current_image + 1], 1, shouldHideChrome)
+  else if options.loop
+    showImage(images[0], 1, shouldHideChrome)
 
 showImage = (image, direction = 1, shouldHideChrome = false) ->
   current_image = image.index
@@ -201,8 +206,12 @@ mouseMovement = (event) ->
 
 showChrome = ->
   $('#fullsized_close, #fullsized_fullscreen').toggle(true)
-  $('#fullsized_go_prev').toggle(current_image != 0)
-  $('#fullsized_go_next').toggle(current_image != images.length - 1)
+  if options.loop
+    $('#fullsized_go_prev').show()
+    $('#fullsized_go_next').show()
+  else
+    $('#fullsized_go_prev').toggle(current_image != 0)
+    $('#fullsized_go_next').toggle(current_image != images.length - 1)
 
 $.fn.fullsizable = (opts) ->
   options = $.extend
@@ -215,6 +224,7 @@ $.fn.fullsizable = (opts) ->
     clickBehaviour: 'close'
     preload: true
     reloadOnOpen: false
+    loop: false
   , opts || {}
 
   prepareCurtain()

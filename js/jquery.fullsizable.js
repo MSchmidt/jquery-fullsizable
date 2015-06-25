@@ -4,7 +4,7 @@
 jQuery fullsizable plugin v2.0.2
   - take full available browser space to show images
 
-(c) 2011-2014 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/>
 
 Example Usage:
   $('a.fullsizable').fullsizable();
@@ -18,7 +18,7 @@ Options:
   **clickBehaviour** (optional, 'next' or 'close', defaults to 'close') - whether a click on an opened image should close the viewer or open the next image.
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
-  **looped** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+  **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
  */
 
 (function() {
@@ -77,7 +77,7 @@ Options:
     }
     if (current_image > 0) {
       return showImage(images[current_image - 1], -1, shouldHideChrome);
-    }else if(options.looped){
+    } else if (options.loop) {
       return showImage(images[images.length - 1], -1, shouldHideChrome);
     }
   };
@@ -88,7 +88,7 @@ Options:
     }
     if (current_image < images.length - 1) {
       return showImage(images[current_image + 1], 1, shouldHideChrome);
-    }else if(options.looped){
+    } else if (options.loop) {
       return showImage(images[0], 1, shouldHideChrome);
     }
   };
@@ -281,7 +281,10 @@ Options:
 
   showChrome = function() {
     $('#fullsized_close, #fullsized_fullscreen').toggle(true);
-    if(!options.looped){
+    if (options.loop) {
+      $('#fullsized_go_prev').show();
+      return $('#fullsized_go_next').show();
+    } else {
       $('#fullsized_go_prev').toggle(current_image !== 0);
       return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
     }
@@ -298,7 +301,7 @@ Options:
       clickBehaviour: 'close',
       preload: true,
       reloadOnOpen: false,
-      looped: false
+      loop: false
     }, opts || {});
     prepareCurtain();
     if (options.preload) {
