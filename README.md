@@ -10,6 +10,15 @@ jQuery Plugin page: <http://plugins.jquery.com/fullsizable/>
 Look at the demo section on <http://mschmidt.github.io/jquery-fullsizable> to see jquery-fullsizable in action.
 
 
+## Installation
+
+You can install ``jquery-fullsizable`` by using [Bower](http://bower.io/).
+
+```bash
+bower install jquery-fullsizable
+```
+
+
 ## Example Usage
 Use with default settings:
 
@@ -48,7 +57,7 @@ Style with ``#fullsized_fullscreen``
 
 **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
 
-**looped** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+**loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
 
 
 ## Styling
@@ -152,8 +161,10 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
-* **2.0.3** - to be released
-  * allow custom function for clickBehaviour option
+* **2.1.0** - 25.06.2015
+  * allow custom function for ``clickBehaviour`` option (thanks to MatoTominac)
+  * add ``loop`` option (thanks to pohlaniacz)
+  * add bower support
 
 * **2.0.2** - 03.09.2014
   * fullsizable:opened returns selector of element which triggered the viewer
@@ -197,8 +208,8 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Contributing
-This plugin is written in CoffeeScript and then "compiled" into JavaScript. Please try to make changes to the ``jquery.fullsizable.coffee`` file directly and compile with ``coffee -c js/jquery.fullsizable.coffee``.
+This plugin is written in CoffeeScript and then "compiled" into JavaScript. Please try to make changes to the ``jquery-fullsizable.coffee`` file directly and compile with ``coffee -c js/jquery-fullsizable.coffee``.
 
 
 ## Copyright
-(c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/>
+(c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/> & <http://pixelflush.com/>
