@@ -17,6 +17,7 @@ Options:
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
   **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+  **caption** (optional, defaults to false) - display a caption above the image. Caption dan be set using ``data-caption`` on the fullsizable and will fall back to the ``title`` of the thumbnail.
 ###
 
 $ = jQuery
@@ -25,6 +26,7 @@ container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
 spinner_class = 'fullsized_spinner'
 $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
+$caption_holder  = $('<div id="fullsized_caption"></div>')
 
 images = []
 current_image = 0
@@ -69,6 +71,7 @@ showImage = (image, direction = 1, shouldHideChrome = false) ->
   current_image = image.index
   $(image_holder_id).hide()
   $(image_holder_id).html(image)
+  $caption_holder.text(image.caption) if image.caption && options.caption
 
   # show/hide navigation when hitting range limits
   if options.navigation
@@ -136,12 +139,14 @@ makeFullsizable = ->
 
   $(options.selector).each ->
     image = new Image
-    image.buffer_src = $(this).attr('href')
+    $this = $(this)
+    image.buffer_src = $this.attr('href')
     image.index = images.length
+    image.caption = $this.data('caption')  || $this.children('img:first').attr('title') if options.caption
     images.push image
 
     if options.openOnClick
-      $(this).click (e) ->
+      $this.click (e) ->
         e.preventDefault()
         makeFullsizable() if options.reloadOnOpen
         openViewer(image, this)
@@ -171,6 +176,9 @@ prepareCurtain = ->
       e.preventDefault()
       e.stopPropagation()
       toggleFullscreen()
+
+  if options.caption
+    $image_holder.prepend($caption_holder )
 
   switch options.clickBehaviour
     when 'close' then $(document).on 'click', container_id, closeViewer
@@ -225,6 +233,7 @@ $.fn.fullsizable = (opts) ->
     preload: true
     reloadOnOpen: false
     loop: false
+    caption : false
   , opts || {}
 
   prepareCurtain()
