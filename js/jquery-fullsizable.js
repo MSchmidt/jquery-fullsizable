@@ -202,7 +202,7 @@ Options:
 
   makeFullsizable = function() {
     images.length = 0;
-    return $(options.selector).each(function() {
+    return options.fullsizableElements.each(function() {
       var $imageElement, $this, image;
       image = new Image;
       $this = $(this);
@@ -337,7 +337,7 @@ Options:
 
   $.fn.fullsizable = function(opts) {
     options = $.extend({
-      selector: this.selector,
+      fullsizableElements: this,
       detach_id: null,
       navigation: true,
       closeButton: true,
