@@ -116,8 +116,17 @@ Options:
     current_image = image.index;
     $(image_holder_id).hide();
     $(image_holder_id).html(image);
-    if (options.caption && image.caption) {
-      $caption_holder.html(image.caption);
+    if (options.caption) {
+      if (image.caption) {
+        $caption_holder.html(image.caption);
+        $caption_holder.css({
+          visibility: 'visible'
+        });
+      } else {
+        $caption_holder.css({
+          visibility: 'hidden'
+        });
+      }
     }
     if (options.navigation) {
       if (shouldHideChrome === true) {

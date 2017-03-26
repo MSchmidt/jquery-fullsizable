@@ -73,7 +73,12 @@ showImage = (image, direction = 1, shouldHideChrome = false) ->
   current_image = image.index
   $(image_holder_id).hide()
   $(image_holder_id).html(image)
-  $caption_holder.html(image.caption) if options.caption && image.caption
+  if options.caption
+    if image.caption
+      $caption_holder.html(image.caption);
+      $caption_holder.css({visibility: 'visible'});
+    else
+      $caption_holder.css({visibility: 'hidden'});
 
   # show/hide navigation when hitting range limits
   if options.navigation
