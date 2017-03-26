@@ -17,6 +17,7 @@ Options:
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
   **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+  **caption** (optional, defaults to false) - displays a caption at the bottom of the image. Caption can be set using ``title`` and ``alt`` attributes of the thumbnail.
 ###
 
 $ = jQuery
@@ -24,7 +25,8 @@ $ = jQuery
 container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
 spinner_class = 'fullsized_spinner'
-$image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
+$image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_wrapper"><div id="fullsized_holder"><div id="fullsized_image_holder"></div></div></div></div>')
+$caption_holder  = $('<div id="fullsized_caption_holder"></div>')
 
 images = []
 current_image = 0
@@ -69,6 +71,7 @@ showImage = (image, direction = 1, shouldHideChrome = false) ->
   current_image = image.index
   $(image_holder_id).hide()
   $(image_holder_id).html(image)
+  $caption_holder.html(image.caption) if options.caption && image.caption
 
   # show/hide navigation when hitting range limits
   if options.navigation
@@ -136,12 +139,18 @@ makeFullsizable = ->
 
   $(options.selector).each ->
     image = new Image
-    image.buffer_src = $(this).attr('href')
+    $this = $(this)
+    $imageElement = $this.children('img:first');
+    image.buffer_src = $this.attr('href')
     image.index = images.length
+    if options.caption
+        image.caption = '';
+        image.caption += ('<b>' + $imageElement.attr('title') + '</b><br>') if !!$imageElement.attr('title')
+        image.caption += $imageElement.attr('alt') if !!$imageElement.attr('alt')
     images.push image
 
     if options.openOnClick
-      $(this).click (e) ->
+      $this.click (e) ->
         e.preventDefault()
         makeFullsizable() if options.reloadOnOpen
         openViewer(image, this)
@@ -172,6 +181,9 @@ prepareCurtain = ->
       e.stopPropagation()
       toggleFullscreen()
 
+  if options.caption
+    $image_holder.find('#fullsized_holder').append($caption_holder)
+
   switch options.clickBehaviour
     when 'close' then $(document).on 'click', container_id, closeViewer
     when 'next' then $(document).on 'click', container_id, -> nextImage(true)
@@ -190,6 +202,7 @@ unbindCurtainEvents = ->
   $(document).unbind 'fullsizable:close'
 
 hideChrome = ->
+  $caption_holder.toggle(false);
   $chrome = $image_holder.find('a')
   if $chrome.is(':visible') == true
     $chrome.toggle(false)
@@ -205,6 +218,7 @@ mouseMovement = (event) ->
     showChrome()
 
 showChrome = ->
+  $caption_holder.toggle(true);
   $('#fullsized_close, #fullsized_fullscreen').toggle(true)
   if options.loop
     $('#fullsized_go_prev').show()
@@ -225,6 +239,7 @@ $.fn.fullsizable = (opts) ->
     preload: true
     reloadOnOpen: false
     loop: false
+    caption : false
   , opts || {}
 
   prepareCurtain()

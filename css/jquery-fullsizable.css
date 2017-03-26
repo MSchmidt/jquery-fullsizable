@@ -13,7 +13,24 @@
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
+#fullsized_wrapper {
+  position: relative;
+  display:  inline-block;
+  margin-left: 50%;
+}
+#fullsized_holder {
+  margin-left: -50%;
+}
 #jquery-fullsizable #fullsized_image_holder img {
   display: block;
-  margin: 0 auto;
+}
+#fullsized_caption_holder {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  color: #eeeeee;
+  background: #444; /*Fallback for IE8*/
+  background: rgba(0,0,0,0.5);
 }
