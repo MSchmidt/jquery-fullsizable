@@ -188,7 +188,7 @@ prepareCurtain = ->
       e.stopPropagation()
       toggleFullscreen()
 
-  if options.caption and $image_holder.find(fullscreen_id).length == 0
+  if options.caption
     $image_holder.find('#fullsized_holder').append($caption_holder)
 
   switch options.clickBehaviour
