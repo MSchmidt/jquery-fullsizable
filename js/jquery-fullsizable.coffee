@@ -24,6 +24,8 @@ $ = jQuery
 
 container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
+next_id = '#fullsized_go_next'
+prev_id = '#fullsized_go_prev'
 spinner_class = 'fullsized_spinner'
 $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_wrapper"><div id="fullsized_holder"><div id="fullsized_image_holder"></div></div></div></div>')
 $caption_holder  = $('<div id="fullsized_caption_holder"></div>')
@@ -157,25 +159,25 @@ makeFullsizable = ->
 
 prepareCurtain = ->
   if options.navigation
-    $image_holder.append('<button id="fullsized_go_prev" type="button"></button><button id="fullsized_go_next" type="button"></button>')
-    $(document).on 'click', '#fullsized_go_prev', (e) ->
+    $image_holder.append('<button id="fullsized_go_prev" type="button" title="Previous"></button><button id="fullsized_go_next" type="button" title="Next"></button>')
+    $(document).on 'click', prev_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       prevImage()
-    $(document).on 'click', '#fullsized_go_next', (e) ->
+    $(document).on 'click', next_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       nextImage()
 
   if options.closeButton
-    $image_holder.append('<button id="fullsized_close" type="button"></button>')
+    $image_holder.append('<button id="fullsized_close" type="button" title="Close"></button>')
     $(document).on 'click', '#fullsized_close', (e) ->
       e.preventDefault()
       e.stopPropagation()
       closeViewer()
 
   if options.fullscreenButton and hasFullscreenSupport()
-    $image_holder.append('<button id="fullsized_fullscreen" type="button"></button>')
+    $image_holder.append('<button id="fullsized_fullscreen" type="button" title="Toggle fullscreen"></button>')
     $(document).on 'click', '#fullsized_fullscreen', (e) ->
       e.preventDefault()
       e.stopPropagation()
@@ -221,11 +223,11 @@ showChrome = ->
   $caption_holder.toggle(true);
   $('#fullsized_close, #fullsized_fullscreen').toggle(true)
   if options.loop
-    $('#fullsized_go_prev').show()
-    $('#fullsized_go_next').show()
+    $(prev_id).show()
+    $(next_id).show()
   else
-    $('#fullsized_go_prev').toggle(current_image != 0)
-    $('#fullsized_go_next').toggle(current_image != images.length - 1)
+    $(prev_id).toggle(current_image != 0)
+    $(next_id).toggle(current_image != images.length - 1)
 
 $.fn.fullsizable = (opts) ->
   options = $.extend

@@ -28,9 +28,9 @@
   width: 100%;
   position: absolute;
   bottom: 0;
-  padding: 5px 15px;
+  padding: 5px 10px;
   box-sizing: border-box;
-  color: #eeeeee;
-  background: #444; /*Fallback for IE8*/
-  background: rgba(0,0,0,0.5);
+  color: #ddd;
+  background: #666; /*Fallback for IE8*/
+  background: rgba(102,102,102,0.4);
 }

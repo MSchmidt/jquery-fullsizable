@@ -23,13 +23,17 @@ Options:
  */
 
 (function() {
-  var $, $caption_holder, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, openViewer, options, preloadImage, prepareCurtain, prevImage, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
+  var $, $caption_holder, $image_holder, bindCurtainEvents, closeFullscreen, closeViewer, container_id, current_image, hasFullscreenSupport, hideChrome, image_holder_id, images, keyPressed, makeFullsizable, mouseMovement, mouseStart, nextImage, next_id, openViewer, options, preloadImage, prepareCurtain, prevImage, prev_id, resizeImage, showChrome, showImage, spinner_class, stored_scroll_position, toggleFullscreen, unbindCurtainEvents;
 
   $ = jQuery;
 
   container_id = '#jquery-fullsizable';
 
   image_holder_id = '#fullsized_image_holder';
+
+  next_id = '#fullsized_go_next';
+
+  prev_id = '#fullsized_go_prev';
 
   spinner_class = 'fullsized_spinner';
 
@@ -214,20 +218,20 @@ Options:
 
   prepareCurtain = function() {
     if (options.navigation) {
-      $image_holder.append('<button id="fullsized_go_prev" type="button"></button><button id="fullsized_go_next" type="button"></button>');
-      $(document).on('click', '#fullsized_go_prev', function(e) {
+      $image_holder.append('<button id="fullsized_go_prev" type="button" title="Previous"></button><button id="fullsized_go_next" type="button" title="Next"></button>');
+      $(document).on('click', prev_id, function(e) {
         e.preventDefault();
         e.stopPropagation();
         return prevImage();
       });
-      $(document).on('click', '#fullsized_go_next', function(e) {
+      $(document).on('click', next_id, function(e) {
         e.preventDefault();
         e.stopPropagation();
         return nextImage();
       });
     }
     if (options.closeButton) {
-      $image_holder.append('<button id="fullsized_close" type="button"></button>');
+      $image_holder.append('<button id="fullsized_close" type="button" title="Close"></button>');
       $(document).on('click', '#fullsized_close', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -235,7 +239,7 @@ Options:
       });
     }
     if (options.fullscreenButton && hasFullscreenSupport()) {
-      $image_holder.append('<button id="fullsized_fullscreen" type="button"></button>');
+      $image_holder.append('<button id="fullsized_fullscreen" type="button" title="Toggle fullscreen"></button>');
       $(document).on('click', '#fullsized_fullscreen', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -304,11 +308,11 @@ Options:
     $caption_holder.toggle(true);
     $('#fullsized_close, #fullsized_fullscreen').toggle(true);
     if (options.loop) {
-      $('#fullsized_go_prev').show();
-      return $('#fullsized_go_next').show();
+      $(prev_id).show();
+      return $(next_id).show();
     } else {
-      $('#fullsized_go_prev').toggle(current_image !== 0);
-      return $('#fullsized_go_next').toggle(current_image !== images.length - 1);
+      $(prev_id).toggle(current_image !== 0);
+      return $(next_id).toggle(current_image !== images.length - 1);
     }
   };
 
