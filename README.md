@@ -59,6 +59,8 @@ Style with ``#fullsized_fullscreen``
 
 **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
 
+**caption** (optional, defaults to false) - displays a caption at the bottom of the image. Caption can be set using ``title`` and ``alt`` attributes of the thumbnail.
+
 
 ## Styling
 The packaged ``fullsizable.css`` stylesheet provides only the bare bones to make fullsizable work. Everything
@@ -161,6 +163,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
+* **2.2.0** - 26.03.2017
+  * added caption support
+
 * **2.1.0** - 25.06.2015
   * allow custom function for ``clickBehaviour`` option (thanks to MatoTominac)
   * add ``loop`` option (thanks to pohlaniacz)
