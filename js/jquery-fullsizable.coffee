@@ -144,7 +144,7 @@ closeViewer = ->
 makeFullsizable = ->
   images.length = 0
 
-  options.fullsizableObject.each ->
+  options.fullsizableElements.each ->
     image = new Image
     $this = $(this)
     $imageElement = $this.children('img:first');
@@ -238,7 +238,7 @@ showChrome = ->
 
 $.fn.fullsizable = (opts) ->
   options = $.extend
-    fullsizableObject: this
+    fullsizableElements: this
     detach_id: null
     navigation: true
     closeButton: true
