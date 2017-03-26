@@ -157,7 +157,7 @@ makeFullsizable = ->
 
 prepareCurtain = ->
   if options.navigation
-    $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
+    $image_holder.append('<button id="fullsized_go_prev" type="button"></button><button id="fullsized_go_next" type="button"></button>')
     $(document).on 'click', '#fullsized_go_prev', (e) ->
       e.preventDefault()
       e.stopPropagation()
@@ -168,14 +168,14 @@ prepareCurtain = ->
       nextImage()
 
   if options.closeButton
-    $image_holder.append('<a id="fullsized_close" href="#close"></a>')
+    $image_holder.append('<button id="fullsized_close" type="button"></button>')
     $(document).on 'click', '#fullsized_close', (e) ->
       e.preventDefault()
       e.stopPropagation()
       closeViewer()
 
   if options.fullscreenButton and hasFullscreenSupport()
-    $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>')
+    $image_holder.append('<button id="fullsized_fullscreen" type="button"></button>')
     $(document).on 'click', '#fullsized_fullscreen', (e) ->
       e.preventDefault()
       e.stopPropagation()
@@ -203,7 +203,7 @@ unbindCurtainEvents = ->
 
 hideChrome = ->
   $caption_holder.toggle(false);
-  $chrome = $image_holder.find('a')
+  $chrome = $image_holder.find('button')
   if $chrome.is(':visible') == true
     $chrome.toggle(false)
     $image_holder.bind 'mousemove', mouseMovement

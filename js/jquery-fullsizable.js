@@ -214,7 +214,7 @@ Options:
 
   prepareCurtain = function() {
     if (options.navigation) {
-      $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>');
+      $image_holder.append('<button id="fullsized_go_prev" type="button"></button><button id="fullsized_go_next" type="button"></button>');
       $(document).on('click', '#fullsized_go_prev', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -227,7 +227,7 @@ Options:
       });
     }
     if (options.closeButton) {
-      $image_holder.append('<a id="fullsized_close" href="#close"></a>');
+      $image_holder.append('<button id="fullsized_close" type="button"></button>');
       $(document).on('click', '#fullsized_close', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -235,7 +235,7 @@ Options:
       });
     }
     if (options.fullscreenButton && hasFullscreenSupport()) {
-      $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>');
+      $image_holder.append('<button id="fullsized_fullscreen" type="button"></button>');
       $(document).on('click', '#fullsized_fullscreen', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -278,7 +278,7 @@ Options:
   hideChrome = function() {
     var $chrome;
     $caption_holder.toggle(false);
-    $chrome = $image_holder.find('a');
+    $chrome = $image_holder.find('button');
     if ($chrome.is(':visible') === true) {
       $chrome.toggle(false);
       return $image_holder.bind('mousemove', mouseMovement);

@@ -1,3 +1,8 @@
+#fullsized_go_prev, #fullsized_go_next, #fullsized_close, #fullsized_fullscreen {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
 #fullsized_go_prev, #fullsized_go_next {
   position: absolute;
   top: 40%;
