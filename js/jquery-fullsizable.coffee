@@ -30,7 +30,7 @@ close_id = '#fullsized_close'
 fullscreen_id = '#fullsized_fullscreen'
 spinner_class = 'fullsized_spinner'
 $image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_wrapper"><div id="fullsized_holder"><div id="fullsized_image_holder"></div></div></div></div>')
-$caption_holder  = $('<div id="fullsized_caption_holder"></div>')
+$caption_holder = $('<div id="fullsized_caption_holder"></div>')
 
 images = []
 current_image = 0
@@ -188,7 +188,7 @@ prepareCurtain = ->
       e.stopPropagation()
       toggleFullscreen()
 
-  if options.caption
+  if options.caption and $image_holder.find(fullscreen_id).length == 0
     $image_holder.find('#fullsized_holder').append($caption_holder)
 
   switch options.clickBehaviour
