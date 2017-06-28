@@ -59,6 +59,9 @@ Style with ``#fullsized_fullscreen``
 
 **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
 
+**caption** (optional, defaults to false) - display a caption above the image. Caption dan be set using ``data-caption`` on the fullsizable and will fall back to the ``title`` of the thumbnail.
+Styled with ``#fullsized_caption``
+
 
 ## Styling
 The packaged ``fullsizable.css`` stylesheet provides only the bare bones to make fullsizable work. Everything
