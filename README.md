@@ -163,6 +163,9 @@ Triggers: ``fullsizable:open``, ``fullsizable:close``, ``fullsizable:next``, ``f
 
 
 ## Changelog
+* **2.2.1** - 08.09.2017
+  * small fix and improvement
+
 * **2.2.0** - 26.03.2017
   * added caption support
 
