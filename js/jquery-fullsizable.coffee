@@ -211,10 +211,11 @@ unbindCurtainEvents = ->
   $(document).unbind 'fullsizable:close'
 
 hideChrome = ->
-  $caption_holder.toggle(false);
+  $caption_holder.toggle(false)
   $chrome = $image_holder.find('button')
   if $chrome.is(':visible') == true
     $chrome.toggle(false)
+    $image_holder.css('cursor', 'none')
     $image_holder.bind 'mousemove', mouseMovement
 
 mouseStart = null
@@ -227,8 +228,9 @@ mouseMovement = (event) ->
     showChrome()
 
 showChrome = ->
-  $caption_holder.toggle(true);
+  $caption_holder.toggle(true)
   $(close_id+','+fullscreen_id).toggle(true)
+  $image_holder.css('cursor', 'auto')
   if options.loop
     $(prev_id).show()
     $(next_id).show()

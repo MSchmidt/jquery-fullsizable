@@ -304,6 +304,7 @@ Options:
     $chrome = $image_holder.find('button');
     if ($chrome.is(':visible') === true) {
       $chrome.toggle(false);
+      $image_holder.css('cursor', 'none');
       return $image_holder.bind('mousemove', mouseMovement);
     }
   };
@@ -326,6 +327,7 @@ Options:
   showChrome = function() {
     $caption_holder.toggle(true);
     $(close_id + ',' + fullscreen_id).toggle(true);
+    $image_holder.css('cursor', 'auto');
     if (options.loop) {
       $(prev_id).show();
       return $(next_id).show();
