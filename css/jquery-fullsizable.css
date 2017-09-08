@@ -23,6 +23,7 @@
 }
 #jquery-fullsizable #fullsized_image_holder img {
   display: block;
+  max-width: none;
 }
 #fullsized_caption_holder {
   width: 100%;
