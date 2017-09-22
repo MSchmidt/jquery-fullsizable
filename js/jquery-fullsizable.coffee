@@ -1,5 +1,5 @@
 ###
-jQuery fullsizable plugin v2.1.0
+jQuery fullsizable plugin v2.2.0
   - take full available browser space to show images
 
 (c) 2011-2015 Matthias Schmidt <http://m-schmidt.eu/>
@@ -17,14 +17,20 @@ Options:
   **preload** (optional, defaults to true) - lookup selector on initialization, set only to false in combination with ``reloadOnOpen: true`` or ``fullsizable:reload`` event.
   **reloadOnOpen** (optional, defaults to false) - lookup selector every time the viewer opens.
   **loop** (optional, defaults to false) - don't hide prev/next button on first/last image, so images are looped
+  **caption** (optional, defaults to false) - displays a caption at the bottom of the image. Caption can be set using ``title`` and ``alt`` attributes of the thumbnail.
 ###
 
 $ = jQuery
 
 container_id = '#jquery-fullsizable'
 image_holder_id = '#fullsized_image_holder'
+next_id = '#fullsized_go_next'
+prev_id = '#fullsized_go_prev'
+close_id = '#fullsized_close'
+fullscreen_id = '#fullsized_fullscreen'
 spinner_class = 'fullsized_spinner'
-$image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_image_holder"></div></div>')
+$image_holder = $('<div id="jquery-fullsizable"><div id="fullsized_wrapper"><div id="fullsized_holder"><div id="fullsized_image_holder"></div></div></div></div>')
+$caption_holder = $('<div id="fullsized_caption_holder"></div>')
 
 images = []
 current_image = 0
@@ -47,11 +53,9 @@ resizeImage = ->
 keyPressed = (e) ->
   closeViewer() if e.keyCode == 27
 
-  if e.keyCode == 37
-    prevImage(true)
-
-  if e.keyCode == 39
-    nextImage(true)
+  if options.navigation
+    prevImage(true) if e.keyCode == 37
+    nextImage(true) if e.keyCode == 39
 
 prevImage = (shouldHideChrome = false) ->
   if current_image > 0
@@ -69,6 +73,12 @@ showImage = (image, direction = 1, shouldHideChrome = false) ->
   current_image = image.index
   $(image_holder_id).hide()
   $(image_holder_id).html(image)
+  if options.caption
+    if image.caption
+      $caption_holder.html(image.caption);
+      $caption_holder.css({visibility: 'visible'});
+    else
+      $caption_holder.css({visibility: 'hidden'});
 
   # show/hide navigation when hitting range limits
   if options.navigation
@@ -109,6 +119,7 @@ preloadImage = (direction) ->
 
 openViewer = (image, opening_selector) ->
   $('body').append($image_holder)
+  $('body').addClass('fullsizable-open')
   $(window).bind 'resize', resizeImage
   showImage(image)
   $(container_id).hide().fadeIn ->
@@ -128,49 +139,59 @@ closeViewer = ->
   closeFullscreen()
 
   $(container_id).removeClass(spinner_class)
+  $('body').removeClass('fullsizable-open')
   unbindCurtainEvents()
   $(window).unbind 'resize', resizeImage
 
 makeFullsizable = ->
   images.length = 0
 
-  $(options.selector).each ->
+  options.fullsizableElements.each ->
     image = new Image
-    image.buffer_src = $(this).attr('href')
+    $this = $(this)
+    $imageElement = $this.children('img:first');
+    image.buffer_src = $this.attr('href')
     image.index = images.length
+    if options.caption
+        image.caption = '';
+        image.caption += ('<b>' + $imageElement.attr('title') + '</b><br>') if !!$imageElement.attr('title')
+        image.caption += $imageElement.attr('alt') if !!$imageElement.attr('alt')
     images.push image
 
     if options.openOnClick
-      $(this).click (e) ->
+      $this.unbind("click").click (e) ->
         e.preventDefault()
         makeFullsizable() if options.reloadOnOpen
         openViewer(image, this)
 
 prepareCurtain = ->
-  if options.navigation
-    $image_holder.append('<a id="fullsized_go_prev" href="#prev"></a><a id="fullsized_go_next" href="#next"></a>')
-    $(document).on 'click', '#fullsized_go_prev', (e) ->
+  if options.navigation and $image_holder.find(prev_id).length == 0
+    $image_holder.append('<button id="fullsized_go_prev" type="button" title="Previous"></button><button id="fullsized_go_next" type="button" title="Next"></button>')
+    $(document).on 'click', prev_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       prevImage()
-    $(document).on 'click', '#fullsized_go_next', (e) ->
+    $(document).on 'click', next_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       nextImage()
 
-  if options.closeButton
-    $image_holder.append('<a id="fullsized_close" href="#close"></a>')
-    $(document).on 'click', '#fullsized_close', (e) ->
+  if options.closeButton and $image_holder.find(close_id).length == 0
+    $image_holder.append('<button id="fullsized_close" type="button" title="Close"></button>')
+    $(document).on 'click', close_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       closeViewer()
 
-  if options.fullscreenButton and hasFullscreenSupport()
-    $image_holder.append('<a id="fullsized_fullscreen" href="#fullscreen"></a>')
-    $(document).on 'click', '#fullsized_fullscreen', (e) ->
+  if options.fullscreenButton and hasFullscreenSupport() and $image_holder.find(fullscreen_id).length == 0
+    $image_holder.append('<button id="fullsized_fullscreen" type="button" title="Toggle fullscreen"></button>')
+    $(document).on 'click', fullscreen_id, (e) ->
       e.preventDefault()
       e.stopPropagation()
       toggleFullscreen()
+
+  if options.caption
+    $image_holder.find('#fullsized_holder').append($caption_holder)
 
   switch options.clickBehaviour
     when 'close' then $(document).on 'click', container_id, closeViewer
@@ -179,20 +200,24 @@ prepareCurtain = ->
 
 bindCurtainEvents = ->
   $(document).bind 'keydown', keyPressed
-  $(document).bind 'fullsizable:next', -> nextImage(true)
-  $(document).bind 'fullsizable:prev', -> prevImage(true)
+  if options.navigation
+    $(document).bind 'fullsizable:next', -> nextImage(true)
+    $(document).bind 'fullsizable:prev', -> prevImage(true)
   $(document).bind 'fullsizable:close', closeViewer
 
 unbindCurtainEvents = ->
   $(document).unbind 'keydown', keyPressed
-  $(document).unbind 'fullsizable:next'
-  $(document).unbind 'fullsizable:prev'
+  if options.navigation
+    $(document).unbind 'fullsizable:next'
+    $(document).unbind 'fullsizable:prev'
   $(document).unbind 'fullsizable:close'
 
 hideChrome = ->
-  $chrome = $image_holder.find('a')
+  $caption_holder.toggle(false)
+  $chrome = $image_holder.find('button')
   if $chrome.is(':visible') == true
     $chrome.toggle(false)
+    $image_holder.css('cursor', 'none')
     $image_holder.bind 'mousemove', mouseMovement
 
 mouseStart = null
@@ -205,17 +230,19 @@ mouseMovement = (event) ->
     showChrome()
 
 showChrome = ->
-  $('#fullsized_close, #fullsized_fullscreen').toggle(true)
+  $caption_holder.toggle(true)
+  $(close_id+','+fullscreen_id).toggle(true)
+  $image_holder.css('cursor', 'auto')
   if options.loop
-    $('#fullsized_go_prev').show()
-    $('#fullsized_go_next').show()
+    $(prev_id).show()
+    $(next_id).show()
   else
-    $('#fullsized_go_prev').toggle(current_image != 0)
-    $('#fullsized_go_next').toggle(current_image != images.length - 1)
+    $(prev_id).toggle(current_image != 0)
+    $(next_id).toggle(current_image != images.length - 1)
 
 $.fn.fullsizable = (opts) ->
   options = $.extend
-    selector: this.selector
+    fullsizableElements: this
     detach_id: null
     navigation: true
     closeButton: true
@@ -225,6 +252,7 @@ $.fn.fullsizable = (opts) ->
     preload: true
     reloadOnOpen: false
     loop: false
+    caption : false
   , opts || {}
 
   prepareCurtain()

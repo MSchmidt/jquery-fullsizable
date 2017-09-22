@@ -18,7 +18,7 @@
   <script>
     $(function() {
       $('a').fullsizable({
-        detach_id: 'container'
+        caption: true
       });
 
       $(document).on('fullsizable:opened', function(){
@@ -40,7 +40,7 @@
 
 <body>
   <h1>jQuery.fullsizable</h1>
-  <h2>Themed and with touch events</h2>
+  <h2>Themed, with captions and touch events</h2>
   <div id="container">
     <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Locomotives-Roundhouse2.jpg/1000px-Locomotives-Roundhouse2.jpg">
       <img title="Locomotives Roundhouse"
@@ -53,13 +53,12 @@
             src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Icebergs_in_the_High_Arctic_-_20050907.jpg/100px-Icebergs_in_the_High_Arctic_-_20050907.jpg">
     </a>
     <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/1000px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
-      <img title="Araña"
-            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+      <img alt="Xysticus cristatus, A Estrada, Galicia, Spain"
             src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg/100px-Ara%C3%B1a._A_Estrada%2C_Galiza._02.jpg">
     </a>
     <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/1000px-Fitness_Model_Britt_2007.JPG">
-      <img title="Araña"
-            alt="Xysticus cristatus, A Estrada, Galicia, Spain"
+      <img title="Britt"
+            alt=""
             src="http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Fitness_Model_Britt_2007.JPG/100px-Fitness_Model_Britt_2007.JPG">
     </a>
   </div>
