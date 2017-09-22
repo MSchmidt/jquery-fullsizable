@@ -119,6 +119,7 @@ preloadImage = (direction) ->
 
 openViewer = (image, opening_selector) ->
   $('body').append($image_holder)
+  $('body').addClass('fullsizable-open')
   $(window).bind 'resize', resizeImage
   showImage(image)
   $(container_id).hide().fadeIn ->
@@ -138,6 +139,7 @@ closeViewer = ->
   closeFullscreen()
 
   $(container_id).removeClass(spinner_class)
+  $('body').removeClass('fullsizable-open')
   unbindCurtainEvents()
   $(window).unbind 'resize', resizeImage
 

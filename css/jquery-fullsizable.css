@@ -35,3 +35,6 @@
   background: #666; /*Fallback for IE8*/
   background: rgba(102,102,102,0.4);
 }
+.fullsizable-open {
+  overflow: hidden;
+}

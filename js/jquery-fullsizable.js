@@ -173,6 +173,7 @@ Options:
 
   openViewer = function(image, opening_selector) {
     $('body').append($image_holder);
+    $('body').addClass('fullsizable-open');
     $(window).bind('resize', resizeImage);
     showImage(image);
     return $(container_id).hide().fadeIn(function() {
@@ -196,6 +197,7 @@ Options:
     });
     closeFullscreen();
     $(container_id).removeClass(spinner_class);
+    $('body').removeClass('fullsizable-open');
     unbindCurtainEvents();
     return $(window).unbind('resize', resizeImage);
   };
